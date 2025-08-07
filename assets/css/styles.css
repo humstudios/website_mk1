@@ -2,21 +2,19 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: 'Noto Sans', sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to top, #0060df, #bce3f0);
-  background-size: 400% 400%;
-  animation: skyDrift 60s ease infinite;
-  color: #333;
+  background: linear-gradient(to top, #1a8cff, #80bfff);
+  background-size: cover;
+  background-attachment: fixed;
+    color: #333;
   overflow-x: hidden;
-}
-
-@keyframes skyDrift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 /* ☁️ Clouds */
@@ -53,18 +51,18 @@ body {
 }
 
 .cloud3 {
-  top: 25%;
+  top: 24%;
   left: -150px; /* Positioned closer than cloud1 */
   width: 150px;
-  animation: drift2 65s linear infinite;
-  animation-delay: -45s;
+  animation: drift2 90s linear infinite;
+  animation-delay: -25s;
 }
 
 .cloud4 {
   top: 40%;
   left: -100px; /* Starts further right than cloud2 */
   width: 180px;
-  animation: drift3 85s linear infinite;
+  animation: drift3 135s linear infinite;
   animation-delay: -10s;
 }
 
@@ -77,54 +75,19 @@ body {
 }
 
 .cloud6 {
-  top: 75%;
+  top: 72%;
   left: -220px;
-  width: 80px;
-  animation: drift3 100s linear infinite;
-  animation-delay: -5s;
+  width: 120px;
+  animation: drift3 80s linear infinite;
+  animation-delay: -55s;
 }
 
 .cloud7 {
   top: 89%;
-  left: -240px;
+  left: -440px;
   width: 180px;
-  animation: drift2 80s linear infinite;
-  animation-delay: -15s;
-}
-
-
-@keyframes drift1 {
-  0% { transform: translateX(0); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateX(150vw); opacity: 0; }
-}
-
-@keyframes drift2 {
-  0% { transform: translateX(0); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateX(160vw); opacity: 0; }
-}
-
-@keyframes drift3 {
-  0% { transform: translateX(0); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateX(140vw); opacity: 0; }
-}
-
-  100% { transform: translateX(110vw); }
-}
-
-@keyframes drift2 {
-  0% { transform: translateX(-300px); }
-  100% { transform: translateX(120vw); }
-}
-
-@keyframes drift3 {
-  0% { transform: translateX(-200px); }
-  100% { transform: translateX(100vw); }
+  animation: drift2 100s linear infinite;
+  animation-delay: -35s;
 }
 
 /* Layout */
@@ -201,8 +164,6 @@ body {
 }
 
 @keyframes slideDown {
-  0% { opacity: 0; transform: translateY(-10px); }
-  100% { opacity: 1; transform: translateY(0); }
 }
 
 .hero-image img {
@@ -331,15 +292,13 @@ footer:not(.custom-footer) {
 }
 
 .custom-footer {
-  background-color: #5CB3FF;
+  background-color: #80bfff;
   text-align: center;
   padding: 1rem 1rem 0.5rem;
   font-size: 0.9rem;
   color: white;
   font-family: 'Noto Sans', sans-serif;
 }
-
-
 
 .footer-content {
   display: grid;
@@ -352,15 +311,11 @@ footer:not(.custom-footer) {
   margin-bottom: 0.25rem;
 }
 
-
-
 .footer-logo img {
   width: 140px;
   max-width: 100%;
   height: auto;
 }
-
-
 
 .footer-social img {
   width: 40px;
@@ -411,7 +366,6 @@ footer:not(.custom-footer) {
   margin: 0 auto 1rem;
 }
 
-
   .footer-menu nav ul li {
     margin-bottom: 0.5rem;
   }
@@ -421,20 +375,16 @@ footer:not(.custom-footer) {
   
 }
 
-
 .footer-logo {
   grid-column: 1;
   justify-self: start;
 }
-
-
 
 .footer-menu {
   grid-column: 3;
   justify-self: end;
   text-align: right;
 }
-
 
 .footer-social {
   display: flex;
@@ -447,4 +397,25 @@ footer:not(.custom-footer) {
   align-self: center;
   grid-column: 2;
   justify-self: center;
+}
+
+@keyframes drift1 {
+  0% { transform: translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(150vw); opacity: 0; }
+}
+
+@keyframes drift2 {
+  0% { transform: translateX(-300px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(160vw); opacity: 0; }
+}
+
+@keyframes drift3 {
+  0% { transform: translateX(-200px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(140vw); opacity: 0; }
 }

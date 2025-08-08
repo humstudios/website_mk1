@@ -10,8 +10,14 @@
 <meta content="Interactive stories for kids - Hum Studios creates ad-free, fun digital picture books for preschoolers that blend reading and entertainment." name="description"/>
 <meta content="interactive stories, digital books for kids, preschool apps, reading apps, fun picture books" name="keywords"/>
 <link href="assets/img/bee_64.png" rel="icon" sizes="64x64" type="image/png"/>
-<link href="https://fonts.googleapis.com/css2?family=Atma:wght@700&amp;family=Noto+Sans:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Atma:wght@700&amp;family=Overpass:wght@400&amp;800&amp;display=swap" rel="stylesheet"/>
 <link href="assets/css/styles.css" rel="stylesheet"/>
+<!-- Swiper CSS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+ 
 </head>
 <body>
 <div class="clouds">
@@ -56,12 +62,22 @@
       Little Stories,<span class="mobile-break"> </span>Big Adventures!
      </h1>
 </div>
-<div class="hero-image">
-<img alt="Hum Studios Hero Image" src="assets/img/hero_image_01.jpg"/>
+<div class="hero-carousel swiper">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide"><img src="assets/img/carousel01.jpg" alt="Slide 1" /></div>
+    <div class="swiper-slide"><img src="assets/img/carousel02.jpg" alt="Slide 2" /></div>
+    <div class="swiper-slide"><img src="assets/img/carousel03.jpg" alt="Slide 3" /></div>
+    <div class="swiper-slide"><img src="assets/img/carousel04.jpg" alt="Slide 3" /></div>
+  </div>
+
+  <!-- Optional Navigation -->
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
 </div>
+
 </header>
 <main role="main">
-<section>
+<section class="card">
 <h1>
       Interactive stories for kids
      </h1>
@@ -73,9 +89,9 @@
      </p>
 </section>
 <section class="card">
-<h2>
+<h1>
       Our first adventure: No Pets Allowed!
-     </h2>
+     </h1>
 <p>
       Jessie is a young girl who loves animals but lives in a building where no pets are allowed. When the local zoo closes down and an elephant and its friends turn up at Jessie’s apartment looking for a new place to live, Jessie is over the moon—but she needs to keep the animals hidden from the neighbors.
      </p>
@@ -95,25 +111,18 @@
 </a>
 </div>
 </div>
-</section><section class="">
-<h2>
+</section>
+ <section class="card">
+<h1>
       How our digital books work
-     </h2>
+     </h1>
 <p>
-      “No Pets Allowed!” is the first in Hum Studios’s interactive book series.
+      “No Pets Allowed!” is the first in Hum Studios’ interactive book series. Our books work just like traditional ones, with the pages turning when you swipe the screen on your tablet or phone. Unlike a regular book, though, if you tap the screen, the characters come alive and play out the scene!
      </p>
 <div style="text-align: center;">
-<img alt="Swipe!" src="assets/img/Website_Instructions_Nav_Loop.gif" style="width: 60%; height: auto; border-radius: 16px; margin: 1rem 0;"/>
+<img alt="Instructions!" src="assets/img/Website_Instructions_Uncut_Loop.gif" style="width: 60%; height: auto; border-radius: 16px; margin: 1rem 0;"/>
 </div>
-<p>
-      Our books work just like traditional ones, with the pages turning when you swipe the screen on your tablet or phone.
-     </p>
-<div style="text-align: center;">
- <img alt="Tap!" src="assets/img/Website_Instructions_Press_Loop.gif" style="width: 60%; height: auto; border-radius: 16px; margin: 1rem 0;"/>
- </div>
-<p>
-      Unlike a regular book, though, if you tap the screen, the characters come alive and play out the scene.
-     </p>
+
 <div style="display: flex; justify-content: center;">
 <ul style="text-align: left; list-style-type: disc; padding-left: 1.5rem; max-width: 400px;">
 <li>
@@ -131,9 +140,9 @@
 </ul>
 </div>
 </section><section class="card">
-<h2>
+<h1>
       It's a game as well as a book
-     </h2>
+     </h1>
 <h3>
       Find the butterflies!
      </h3>
@@ -141,21 +150,21 @@
       Hidden within the story are 5 butterflies. As your child reads the adventure, they’re invited to find all 5. The great thing about the book being digital is every time your child reads it, the butterflies are hidden in different places.
      </p>
 </section>
-<section>
-<h2>
+<section class="card">
+<h1>
       No ads, no subscriptions or hidden charges, ever!
-     </h2>
+     </h1>
 <p>
       As parents ourselves, we wanted to create a fun interactive book for kids that was also worry-free for their parents. That’s why our books are ad and subscription-free. Once you download our book, it’s yours forever, simple as that. You don’t even need to have an internet connection to use it.
      </p>
 <h3>
-      It’s fun, it’s educational, it’s safe – and it’s only $2.99!
+      It’s fun, it’s educational, it’s safe – and it’s only £2.99!
      </h3>
 </section>
 <section class="card">
-<h2>
+<h1>
       About Hum
-     </h2>
+     </h1>
 <p>
       Hum Studios is a team of writers who’ve worked at Disney and Universal Studios who joined forces with a group of BAFTA award-winning animators. Together, we wanted to tell cartoon stories that merged the fun and humor of traditional cartoons with the interactive potential of modern technology.
      </p>
@@ -163,10 +172,10 @@
       With our kids loving pet stories and animal stories, we created an engaging interactive digital book that combines the educational value of the best preschool apps with the sheer fun of stories about pets.
      </p>
 </section>
-<section>
-<h2>
+<section class="card">
+<h1>
       Coming Soon! The Bad Witch’s Birthday
-     </h2>
+     </h1>
 <p>
       Next in our series of Jessie Adventures is ‘The Bad Witch’s Birthday’. When Jessie meets a wicked old witch who’s particularly miserable because no one remembered her birthday, Jessie tries to give her a fun day and teach her the meaning of kindness. And, oh dear, what a mess that turns out to be!
      </p>
@@ -242,6 +251,33 @@
       }
     });
   }
+</script>
+ <!-- Swiper scripts go here -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const swiper = new Swiper('.swiper', {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
+    coverflowEffect: {
+      rotate: 50,
+      stretch: 0,
+      depth: 100,
+      modifier: 1,
+      slideShadows: true,
+    },
+    loop: true,
+    speed: 1000,
+    autoplay: {
+      delay: 6000,
+      pauseOnMouseEnter: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  });
 </script>
 </body>
 </html>

@@ -20,6 +20,7 @@ body {
 /* ☁️ Clouds */
 .clouds {
   position: fixed;
+  z-index: 0;
   top: 0;
   left: 0;
   width: 100vw;
@@ -36,7 +37,7 @@ body {
 
 .cloud1 {
   top: 1.5%;
-  left: -300px; /* Moved farther left */
+  left: -15vw; /* Moved farther left */
   width: 200px;
   animation: drift1 120s linear infinite;
   animation-delay: -30s;
@@ -44,7 +45,7 @@ body {
 
 .cloud2 {
   top: 14%;
-  left: -40px;
+  left: -2vw;
   width: 170px;
   animation: drift1 85s linear infinite;
   animation-delay: -35s;
@@ -52,7 +53,7 @@ body {
 
 .cloud3 {
   top: 24%;
-  left: -150px; /* Positioned closer than cloud1 */
+  left: -8vw; /* Positioned closer than cloud1 */
   width: 150px;
   animation: drift2 90s linear infinite;
   animation-delay: -25s;
@@ -60,7 +61,7 @@ body {
 
 .cloud4 {
   top: 40%;
-  left: -100px; /* Starts further right than cloud2 */
+  left: -5vw; /* Starts further right than cloud2 */
   width: 180px;
   animation: drift3 135s linear infinite;
   animation-delay: -10s;
@@ -68,7 +69,7 @@ body {
 
 .cloud5 {
   top: 60%;
-  left: -220px;
+  left: -12vw;
   width: 150px;
   animation: drift2 75s linear infinite;
   animation-delay: -20s;
@@ -76,7 +77,7 @@ body {
 
 .cloud6 {
   top: 72%;
-  left: -220px;
+  left: -12vw;
   width: 120px;
   animation: drift3 80s linear infinite;
   animation-delay: -55s;
@@ -84,7 +85,7 @@ body {
 
 .cloud7 {
   top: 89%;
-  left: -440px;
+  left: -20vw;
   width: 180px;
   animation: drift2 100s linear infinite;
   animation-delay: -35s;
@@ -92,6 +93,8 @@ body {
 
 /* Layout */
 .container {
+  position: relative;
+  z-index: 1;
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem 3rem;
@@ -100,6 +103,7 @@ body {
 }
 
 .top-header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -153,12 +157,28 @@ body {
   display: none;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 1rem;
-  background: rgba(0,0,0,0.7);
+  background: white;
   padding: 1rem;
   border-radius: 8px;
-  animation: slideDown 0.3s ease-out forwards;
+  position: absolute;
+  right: 1rem;
+  top: 100%;
+  z-index: 1000;
+  text-align: right;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.mobile-nav a {
+  color: #1a8cff;
+  font-family: 'Atma', cursive;
+  text-decoration: none;
+  display: block;
+}
+
+.mobile-nav a:hover {
+  text-decoration: underline;
+}
+
 .mobile-nav.show {
   display: flex;
 }

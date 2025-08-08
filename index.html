@@ -11,8 +11,8 @@
 <meta content="interactive stories, digital books for kids, preschool apps, reading apps, fun picture books" name="keywords"/>
 <link href="assets/img/bee_64.png" rel="icon" sizes="64x64" type="image/png"/>
 <link href="https://fonts.googleapis.com/css2?family=Atma:wght@700&amp;family=Noto+Sans:wght@400;700&amp;display=swap" rel="stylesheet"/>
-<link href="assets/css/styles.css" rel="stylesheet">
-</link></head>
+<link href="assets/css/styles.css" rel="stylesheet"/>
+</head>
 <body>
 <div class="clouds">
 <img alt="" class="cloud cloud1" src="assets/img/Cloud.png"/>
@@ -25,7 +25,7 @@
 </div>
 <div class="container">
 <header>
-<div class="top-header">
+<div class="top-header" style="position: relative;">
 <img alt="Hum Studios Logo" class="logo" src="assets/img/Weblogo01.png"/>
 <nav class="top-nav desktop">
 <a href="index.html">
@@ -45,12 +45,11 @@
 <div></div>
 </div>
 <!-- Mobile Navigation Menu -->
-<div aria-hidden="true" class="mobile-nav" id="mobileMenu">
+<nav aria-hidden="true" class="mobile-nav" id="mobileMenu">
 <a href="index.html">Home</a>
 <a href="contact.html">Contact</a>
 <a href="privacy.html">Privacy Policy</a>
-</div>
-
+</nav>
 </div>
 <div style="text-align: center; padding: 1rem 0;">
 <h1 style="font-size: 3.7rem; font-family: 'Atma', cursive; color: #fff; margin: 0; text-shadow: 3px 3px 5px #4a90e2;">
@@ -96,19 +95,7 @@
 </a>
 </div>
 </div>
-</section>
-<section>
-<h2>
-      It's a game as well as a book
-     </h2>
-<h3>
-      Find the butterflies!
-     </h3>
-<p>
-      Hidden within the story are 5 butterflies. As your child reads the adventure, they’re invited to find all 5. The great thing about the book being digital is every time your child reads it, the butterflies are hidden in different places.
-     </p>
-</section>
-<section class="card">
+</section><section class="">
 <h2>
       How our digital books work
      </h2>
@@ -139,7 +126,19 @@
        </li>
 </ul>
 </div>
+</section><section class="card">
+<h2>
+      It's a game as well as a book
+     </h2>
+<h3>
+      Find the butterflies!
+     </h3>
+<p>
+      Hidden within the story are 5 butterflies. As your child reads the adventure, they’re invited to find all 5. The great thing about the book being digital is every time your child reads it, the butterflies are hidden in different places.
+     </p>
 </section>
+
+
 <section>
 <h2>
       No ads, no subscriptions or hidden charges, ever!
@@ -222,19 +221,25 @@
 </div>
 </footer>
 <script>
-   const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    function toggleMenu() {
-      const isOpen = mobileMenu.classList.toggle('show');
-      hamburgerBtn.setAttribute('aria-expanded', isOpen);
-      mobileMenu.setAttribute('aria-hidden', !isOpen);
-    }
-    hamburgerBtn?.addEventListener('keydown', (e) => {
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  function toggleMenu() {
+    const isOpen = mobileMenu.classList.toggle('show');
+    hamburgerBtn.setAttribute('aria-expanded', isOpen);
+    mobileMenu.setAttribute('aria-hidden', !isOpen);
+  }
+
+  if (hamburgerBtn && mobileMenu) {
+    hamburgerBtn.addEventListener('click', toggleMenu);
+
+    hamburgerBtn.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         toggleMenu();
       }
     });
-  </script>
+  }
+</script>
 </body>
 </html>

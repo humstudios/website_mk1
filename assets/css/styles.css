@@ -12,13 +12,12 @@ html, body {
   box-sizing: border-box;
 }
 
-
 body {
   font-family: 'Overpass', sans-serif;
   font-weight: 400; 
   margin: 0;
   padding: 0;
-  background: linear-gradient(to top, #1a8cff, #80bfff);
+  background: linear-gradient(to bottom, #235b98, #4891c3, #2d69a3);
   background-size: cover;
   background-attachment: fixed;
     color: #333;
@@ -39,94 +38,62 @@ body {
   z-index: -1;
 }
 
-.cloud {
-  position: absolute;
-  opacity: 0.9;
-}
+
 
 .cloud1 {
   top: 2.3%;
   left: -15vw; /* Moved farther left */
   width: 200px;
-  animation: drift1 120s linear infinite;
-  animation-delay: -30s;
+  
+  
 }
 
 .cloud2 {
   top: 14%;
   left: -2vw;
   width: 170px;
-  animation: drift1 85s linear infinite;
-  animation-delay: -35s;
+  
+  
 }
 
 .cloud3 {
   top: 24%;
   left: -8vw; /* Positioned closer than cloud1 */
   width: 150px;
-  animation: drift2 90s linear infinite;
-  animation-delay: -25s;
+  
+  
 }
 
 .cloud4 {
   top: 40%;
   left: -5vw; /* Starts further right than cloud2 */
   width: 180px;
-  animation: drift3 135s linear infinite;
-  animation-delay: -10s;
+  
+  
 }
 
 .cloud5 {
   top: 60%;
   left: -12vw;
   width: 150px;
-  animation: drift2 75s linear infinite;
-  animation-delay: -20s;
+  
+  
 }
 
 .cloud6 {
   top: 72%;
   left: -12vw;
   width: 120px;
-  animation: drift3 80s linear infinite;
-  animation-delay: -55s;
+  
+  
 }
 
 .cloud7 {
   top: 89%;
   left: -20vw;
   width: 180px;
-  animation: drift2 100s linear infinite;
-  animation-delay: -35s;
-}
-
-/* Carousel */
-.hero-carousel {
-  width: 100%;
-  max-width: 600px;
-  aspect-ratio: 4 / 3 ;
-  margin: 2rem auto;
-  /* border-radius: 16px; */
-  overflow: hidden;
-}
-
-.hero-carousel img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* border-radius: 16px; */
-}
-.swiper-slide {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.swiper-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* border-radius: 16px; */
+  
+  
 }
 
 /* === Layout & Header === */
@@ -138,9 +105,11 @@ body {
   flex-direction: column;
   position: relative;
   z-index: 1;
-  max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem 3rem;
+
+  width: min(1100px, 92%);
+  margin-inline: auto;
 }
 
 .top-header {
@@ -171,6 +140,8 @@ body {
   font-weight: 700; 
   font-size: 1.1rem;
 }
+.top-nav.desktop { display: none; }
+
 .top-nav a {
   text-decoration: none;
   color: #ffffff;
@@ -184,16 +155,21 @@ body {
 
 /* Mobile nav */
 .hamburger {
-  display: none;
+  display: flex;
   flex-direction: column;
   cursor: pointer;
   gap: 5px;
-  top: -8px;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.25);
   padding: 0.3rem;
-  background: #5CB3FF;
+  background: #235b98;
   border-radius: 6px;
 }
+
+/* Semi-transparent hamburger background */
+.hamburger, #hamburgerBtn {
+  background-color: rgba(0, 64, 128, 0.8);
+}
+
 .hamburger div {
   width: 25px;
   height: 3px;
@@ -220,7 +196,7 @@ body {
 
 .mobile-nav a {
   color: #1a8cff;
-  font-family: 'Overpass', cursive;
+  font-family: 'Overpass', sans-serif;
   text-decoration: none;
   display: block;
 }
@@ -230,10 +206,7 @@ body {
 }
 
 .mobile-nav.show {
-  display: flex;
-}
-
-@keyframes slideDown {
+  display: flex !important;
 }
 
 /* === Hero Section === */
@@ -251,13 +224,22 @@ body {
 /* Headings */
 h1, h2, h3 {
   color: #004080;
-  font-family: 'Overpass', cursive;
+  font-family: 'Overpass', sans-serif;
   font-weight: 800;  /* Bold */
   text-align: center;
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: clamp(2rem, 4vw + 1rem, 3.2rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw + 0.5rem, 2rem);
+  margin: 0.5rem 0; /* tighter top & bottom space */
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2vw + 0.5rem, 1.5rem);
 }
 
 section {
@@ -266,16 +248,26 @@ section {
 
 /* === Cards === */
 
-/* Cards */
-.card {
-  background: rgba(255,255,255,0.9);
-  border-radius: 48px;
-  padding: 2rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-  max-width: 900px;
-  margin: 2rem auto;
-  width: 100%;
+/* === Hero Image Placeholder (card width, 16:9, grey, no rounded corners) === */
+.card.card--hero-placeholder {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  max-width: 900px;  /* matches .card constraint */
+  margin: 0.5rem auto 1.5rem;
 }
+
+.hero-image-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #bfbfbf;
+  border-radius: 0;
+  display: block;
+}
+
+/* Cards */
+
 
 .card:first-of-type {
   margin-top: 0.5rem;
@@ -333,7 +325,7 @@ section {
 
 /* Footer */
 footer:not(.custom-footer) {
-  background-color: #5CB3FF;
+  background-color: #4891c3;
   padding: 1rem;
   text-align: center;
   font-size: 0.75rem;
@@ -356,27 +348,10 @@ footer:not(.custom-footer) {
   text-align: left;
 }
 
-.contact-page .card {
-  margin-top: 2rem; 
-}
-
-.privacy-page .card{
-  margin-top: 2rem;
-}
-
 /* Responsive */
-@media (max-width: 768px) {
-  .top-nav.desktop {
-    display: none;
-  }
-  
-.hamburger {
-    display: flex;
-  }
-}
 
 .custom-footer {
-  background-color: #80bfff;
+  background-color: #4891c3;
   text-align: center;
   padding: 1rem 1rem 0.5rem;
   font-size: 0.9rem;
@@ -406,7 +381,6 @@ footer:not(.custom-footer) {
   height: auto;
 }
 
-
 .footer-social img {
   width: 60px;
   height: 60px;
@@ -432,7 +406,7 @@ text-align: right;
 .footer-menu nav ul li a {
   color: white;
   text-decoration: none;
-  font-family: 'Over', sans-serif;
+  font-family: 'Overpass', sans-serif;
 }
 
 .footer-menu nav ul li a:hover {
@@ -479,59 +453,325 @@ text-align: right;
   grid-column: 2;
   justify-self: center;
 }
-.mobile-break {
-    display: block;
-    height: 0;
-  }
 }
 
 /* === Keyframes === */
 
-@keyframes drift1 {
-  0% { transform: translateX(0); opacity: 0; }
-  10% { opacity: 0.9; }
-  90% { opacity: 0.9; }
-  100% { transform: translateX(150vw); opacity: 0; }
-}
 
-@keyframes drift2 {
-  0% { transform: translateX(-300px); opacity: 0; }
-  10% { opacity: 0.9; }
-  90% { opacity: 0.9; }
-  100% { transform: translateX(160vw); opacity: 0; }
-}
-
-@keyframes drift3 {
-  0% { transform: translateX(-200px); opacity: 0; }
-  10% { opacity: 0.9; }
-  90% { opacity: 0.9; }
-  100% { transform: translateX(140vw); opacity: 0; }
-}
-
-/* === Hero Headline === */
-
-.hero-headline {
-  font-size: 3.2rem;
-  line-height: 1.2;
-  font-weight: 700;
-  font-family: 'Atma', cursive;
-  color: #ffffff;
-  text-shadow: 3px 3px 5px #4a90e2;
-  margin: 0 auto;
-  max-width: 100%;
-  display: block;
-}
 
 /* === Responsive Headline (600px) === */
 
-@media (max-width: 600px) {
+/* === Mobile Break Utility === */
+
+@media (max-width: 768px) {
+  /* removed redundant .hamburger mobile display */
+}
+
+/* === Hero Placeholder (mobile-first base) === */
+.hero { display: block; }
+/* removed old gradient */
+/* === Breakpoint ≥ 768px (tablet/small desktop) === */
+@media (min-width: 768px) {
+  .hamburger { display: none; }
+  .top-nav.desktop { display: flex; }
+  
+}
+
+/* === Breakpoint ≥ 1024px (landscape tablet / small laptop) === */
+@media (min-width: 1024px) {
+  
+}
+
+/* === Breakpoint ≥ 1280px (desktop) === */
+@media (min-width: 1280px) {
+  
+  .container { width: min(1100px, 92%); margin-inline: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud {  }
+}
+
+@media (max-width: 768px) {
+  body { background-attachment: scroll; }
+}
+/* === Mobile overflow safety (site-wide) === */
+html, body { overflow-x: hidden; }
+img, svg, video { max-width: 100%; height: auto; }
+
+/* Let text/URLs wrap on small screens */
+.card, .card p, .card ul, .card li, .card a { overflow-wrap: anywhere; word-break: break-word; }
+.card { box-sizing: border-box; max-width: 900px; width: 100%; margin-inline: auto;   border-radius: 48px;
+  padding: 2rem;
+}
+
+/* ==== Hum Studios: Safe Utilities ==== */
+.u-center-text { text-align: center !important; }
+
+.u-center-flex {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.media-md {
+  display: block;
+  max-width: 60%;
+  height: auto;
+  border-radius: 16px;
+  margin: 1rem auto;
+}
+@media (max-width: 768px) { .media-md { max-width: 100%; } }
+
+.list-disc-left {
+  text-align: left !important;
+  list-style: disc outside;
+  padding-left: 1.5rem;
+  max-width: 400px;
+  margin-inline: auto;
+}
+/* ==== End Utilities ==== */
+
+
+/* ==== Site-wide Content Width Clamp ====
+   Keep logo/menu, hero, cards, and footer content aligned.
+   Change --content-max to adjust the site width globally.
+*/
+:root { --content-max: 900px; }
+
+.top-header,
+.hero-area,
+.hero-headline,
+.card,
+.footer-inner {
+  max-width: var(--content-max);
+  width: 100%;
+  margin-inline: auto;
+}
+
+/* Temporary override in case any inline widths still exist */
+.card { max-width: var(--content-max) !important;   border-radius: 48px;
+  padding: 2rem;
+}
+/* ==== End Clamp ==== */
+
+/* === Width Normalization Patch (v5) ===
+   Prevent page text blocks from appearing narrower than the card width.
+*/
+.intro-text { max-width: none; }
+/* Ensure the core alignment clamp wins */
+.top-header,
+.hero-area,
+.hero-headline,
+.card,
+.footer-inner { max-width: var(--content-max) !important; }
+/* === End v5 === */
+
+/* Skip link accessibility */
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+.skip-link:focus{position:absolute;left:1rem;top:1rem;width:auto;height:auto;overflow:visible;background:#000;color:#fff;padding:.5rem .75rem;border-radius:.5rem;z-index:10000}
+
+/* --- Header spacer (site-wide) --- */
+:root {
+  --header-spacer: 2rem; /* adjust to taste: 1rem–2rem */
+}
+
+.top-header {
+  /* space below logo/top menu */
+  margin-bottom: var(--header-spacer);
+}
+
+.hero-headline {
+  /* avoid margin-collapsing surprises */
+  margin-top: 0;
+}
+
+/* Optional: a touch tighter on small screens */
+@media (max-width: 640px) {
+  :root { --header-spacer: 1rem; }
+}
+
+/* Hero headline — fluid + container-aware (replace previous Option B) */
+.hero-headline {
+  display: block;
+  /* keep this for a subtle inset; change to var(--content-max) for exact match */
+  max-width: calc(var(--content-max) - 1rem);
+  width: 100%;
+  margin: 0 auto var(--header-spacer, 1.25rem);
+  text-align: center;
+  line-height: 1.1;
+
+  /* Fallback fluid sizing for all browsers */
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  text-wrap: balance;
+  hyphens: auto;
+}
+
+/* Preferred: scale by container width when supported */
+@supports (font-size: 1cqw) {
+  /* Add this once globally; if you already have it, don't duplicate */
+  .container { container-type: inline-size; }
+
   .hero-headline {
-    font-size: 1.8rem !important;
+    font-size: clamp(2.2rem, 6.5cqw, 3.2rem);
   }
 }
 
-/* === Mobile Break Utility === */
-
-.mobile-break {
-  display: inline;
+/* Remove the inline-image baseline gap */
+.top-header .logo img {
+  display: block;
+  height: auto;
 }
+
+
+/* === Cloud Fade (enter → hold → early exit fade) v2 === */
+:root { --cloud-min: 0.20; --cloud-max: 0.90; }
+
+   /* entering from side */
+/*   15%  { opacity: var(--cloud-max); }   /* reach full quickly */ */
+/*   55%  { opacity: var(--cloud-max); }   /* hold across the middle half */ */
+/*   85%  { opacity: var(--cloud-min); }   /* start fading while still visible */ */
+/*   100% { opacity: var(--cloud-min); }   /* stay low as it exits */ */
+/* } */
+
+
+/* Neutralize any static per-cloud opacity so animation is the sole source */
+.cloud { opacity: initial; }
+
+/* === Picture-book card palette (warm cream, no transparency) === */
+:root {
+  /* Creamy off-white ~ #FFFCF5 */
+  --card-rgb: 255, 252, 245;
+
+  /* Near-black text for readability ~ #111827 */
+  --card-text-rgb: 17, 24, 39;
+
+  /* Subtle divider/border ~ #ECE9E1 */
+  --card-border-rgb: 236, 233, 225;
+
+  /* Soft shadow color base ~ #0B1220 at low alpha */
+  --shadow-rgb: 11, 18, 32;
+}
+
+/* Card theme (overrides earlier .card colors) */
+.card{
+  background: rgba(var(--card-rgb), 1);
+  color: rgba(var(--card-text-rgb), 1);
+  border: 1px solid rgba(var(--card-border-rgb), 1);
+  box-shadow:
+    0 1px 2px rgba(var(--shadow-rgb), 0.06),
+    0 8px 24px rgba(var(--shadow-rgb), 0.08);
+  border-radius: 48px;
+  padding: 2rem;
+}
+
+  .card{
+    background: rgba(var(--card-rgb), 1);
+    color: rgba(var(--card-text-rgb), 1);
+    border: 1px solid rgba(var(--card-border-rgb), 1);
+    box-shadow:
+      0 1px 2px rgba(var(--shadow-rgb), 0.24),
+      0 8px 24px rgba(var(--shadow-rgb), 0.28);
+    border-radius: 48px;
+  padding: 2rem;
+}
+
+.hero-placeholder {
+  aspect-ratio: 16 / 6;                 /* or 3/2, 4/3, etc. */
+  max-width: var(--content-max);
+  width: 100%;
+  margin: 0 auto var(--header-spacer, 1.25rem);
+  background: rgba(155, 155, 155, 0.9); /* fully opaque white */
+  position: relative;
+  z-index: 1; /* ensures it stacks above the clouds */
+  overflow: hidden;
+}
+
+/* === Clouds (WAAPI) — movement & opacity are animated in JS === */
+
+
+/* Disable any leftover CSS animations on clouds */
+.cloud, .cloud1, .cloud2, .cloud3, .cloud4, .cloud5, .cloud6, .cloud7 {
+  animation: none !important;
+  will-change: transform, opacity;
+  /* Defaults (override per cloud if needed) */
+  --from: -20vw;
+  --to: 120vw;
+  --delay: 0s;
+}
+h1.hero-headline {
+font-family: 'Atma', cursive;
+font-weight: 700 !important;
+  color: #ffffff;
+  text-shadow: 3px 3px 5px #4a90e2;
+}
+
+
+/* Per-cloud paths + stagger (based on your previous setup; tweak if needed) */
+.cloud1 { --from: -20vw;  --to: 110vw; --delay: -30s; }
+.cloud2 { --from: -300px; --to: 160vw; --delay: -35s; }
+.cloud3 { --from: -200px; --to: 140vw; --delay: -25s; }
+.cloud4 { --from: -20vw;  --to: 120vw; --delay: -10s; }
+.cloud5 { --from: -300px; --to: 160vw; --delay: -20s; }
+.cloud6 { --from: -200px; --to: 140vw; --delay: -55s; }
+.cloud7 { --from: -20vw;  --to: 120vw; --delay: -35s; }
+/* Clouds — WAAPI/JS controls movement + opacity */
+
+.clouds {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+  opacity: 1;
+}
+
+.cloud {
+  position: absolute;
+  animation: none !important;
+  will-change: transform, opacity;
+  opacity: initial;
+  --from: -20vw;
+  --to: 120vw;
+  --delay: 0s;
+}
+
+/* Per-cloud paths + stagger (for JS to read) */
+.cloud1 { --from: -20vw;  --to: 110vw; --delay: -30s; }
+.cloud2 { --from: -300px; --to: 160vw; --delay: -35s; }
+.cloud3 { --from: -200px; --to: 140vw; --delay: -25s; }
+.cloud4 { --from: -20vw;  --to: 120vw; --delay: -10s; }
+.cloud5 { --from: -300px; --to: 160vw; --delay: -20s; }
+.cloud6 { --from: -200px; --to: 140vw; --delay: -55s; }
+.cloud7 { --from: -20vw;  --to: 120vw; --delay: -35s; }
+
+/* Cloud speeds override (relaxed, big = slower, small = faster)
+Include this AFTER your main styles.css or paste near the end of styles.css.
+Requires clouds-waapi.per-cloud-duration.js (supports --duration). */
+ 
+/* Largest ≈ 200px */
+.cloud1 { --duration: 180s; }  /* slowest */
+ 
+/* Large ≈ 180px */
+.cloud4 { --duration: 165s; }
+.cloud7 { --duration: 165s; }
+ 
+/* Medium ≈ 170px */
+.cloud2 { --duration: 150s; }
+
+/* Smaller ≈ 150px */
+.cloud3 { --duration: 135s; }
+.cloud5 { --duration: 135s; }
+ 
+/* Smallest ≈ 120px */
+.cloud6 { --duration: 120s; }  /* fastest (still relaxed) */
+
+/* --- Hamburger/menu safety patch (2025-08-10) --- */
+.top-header { position: relative; z-index: 10; }
+.hamburger { position: relative; z-index: 11; }
+.mobile-nav { z-index: 1000; }

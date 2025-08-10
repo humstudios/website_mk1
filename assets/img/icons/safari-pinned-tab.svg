@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Monochrome bee mark (vector). Safari uses this as a mask and applies the color from the link tag. -->
+  <g fill="#000">
+    <!-- body -->
+    <ellipse cx="32" cy="36" rx="18" ry="13"/>
+    <!-- stripes -->
+    <rect x="21" y="24" width="4" height="24"/>
+    <rect x="30" y="24" width="4" height="24"/>
+    <rect x="39" y="24" width="4" height="24"/>
+    <!-- head -->
+    <circle cx="46" cy="36" r="7"/>
+    <circle cx="48.5" cy="33.5" r="1.8" fill="#000"/>
+    <!-- stinger -->
+    <polygon points="12,36 18,34 18,38"/>
+    <!-- wings -->
+    <ellipse cx="28" cy="16" rx="8" ry="6"/>
+    <ellipse cx="38" cy="14" rx="8" ry="6"/>
+    <!-- legs (simplified) -->
+    <path d="M24 48 l-3 5 M30 49 l-2 5 M36 49 l2 5 M42 48 l3 5" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

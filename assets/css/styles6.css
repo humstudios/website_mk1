@@ -428,9 +428,10 @@ section + section { margin-top: var(--stack-gap); }
   h2.h2--long { font-size: clamp(1.08rem, 5vw, 1.3rem); }
 }
 
-/* Tiny phones: reduce card padding to improve headline line-length */
+/* Optional line break — visible only on tiny phones */
+br.only-tiny { display: none; }
 @media (max-width: 390px) {
-  .card { padding: 1.25rem; }
+  br.only-tiny { display: inline; }
 }
 
 /* === Canonical spacing tokens — EDIT HERE ONLY === */

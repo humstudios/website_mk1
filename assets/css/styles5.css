@@ -415,22 +415,23 @@ section + section { margin-top: var(--stack-gap); }
   word-wrap: break-word;    /* legacy */
 }
 
-/* Long H2 helper for tiny screens */
+/* Unified heading scale for tiny phones (≤390px) */
 @media (max-width: 390px) {
-  h2.h2--long {
-    font-size: clamp(1.12rem, 4.6vw + 0.05rem, 1.38rem);
-    line-height: 1.2;
-    text-wrap: balance;
-    hyphens: auto;
-  }
-}
-@media (max-width: 340px) {
-  h2.h2--long { font-size: clamp(1.08rem, 5vw, 1.3rem); }
+  /* keep hero roughly the same, just a touch smaller */
+  .hero-headline { font-size: clamp(2rem, 6vw, 2.6rem); }
+
+  /* consistent h2/h3 sizes */
+  h2 { font-size: clamp(1.15rem, 4.6vw + 0.05rem, 1.4rem); line-height: 1.2; }
+  h3 { font-size: clamp(1.05rem, 4vw, 1.25rem); }
+
+  /* unify: make the “long” variant inherit size so everything matches */
+  h2.h2--long { font-size: inherit; }
 }
 
-/* Tiny phones: reduce card padding to improve headline line-length */
-@media (max-width: 390px) {
-  .card { padding: 1.25rem; }
+/* Ultra-small phones (≤340px) */
+@media (max-width: 340px) {
+  h2 { font-size: clamp(1.08rem, 5vw, 1.3rem); }
+  h3 { font-size: clamp(1rem, 4.4vw, 1.2rem); }
 }
 
 /* === Canonical spacing tokens — EDIT HERE ONLY === */

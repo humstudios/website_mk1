@@ -260,7 +260,7 @@ section {
   box-shadow: none;
   border-radius: 0;
   max-width: 900px;
-  margin: 0.5rem auto var(--card-gap);
+  margin: 0.5rem auto 0;
 }
 
 

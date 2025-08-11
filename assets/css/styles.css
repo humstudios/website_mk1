@@ -43,7 +43,7 @@ body {
 .cloud1 {
   top: 2.3%;
   left: -15vw; /* Moved farther left */
-  width: 200px;
+  width: clamp(160px, 22vw, 240px);
   
   
 }
@@ -51,7 +51,7 @@ body {
 .cloud2 {
   top: 14%;
   left: -2vw;
-  width: 170px;
+  width: clamp(140px, 18vw, 200px);
   
   
 }
@@ -59,7 +59,7 @@ body {
 .cloud3 {
   top: 24%;
   left: -8vw; /* Positioned closer than cloud1 */
-  width: 150px;
+  width: clamp(120px, 16vw, 180px);
   
   
 }
@@ -67,7 +67,7 @@ body {
 .cloud4 {
   top: 40%;
   left: -5vw; /* Starts further right than cloud2 */
-  width: 180px;
+  width: clamp(150px, 20vw, 220px);
   
   
 }
@@ -75,7 +75,7 @@ body {
 .cloud5 {
   top: 60%;
   left: -12vw;
-  width: 150px;
+  width: clamp(120px, 16vw, 180px);
   
   
 }
@@ -83,7 +83,7 @@ body {
 .cloud6 {
   top: 72%;
   left: -12vw;
-  width: 120px;
+  width: clamp(100px, 12vw, 150px);
   
   
 }
@@ -91,7 +91,7 @@ body {
 .cloud7 {
   top: 89%;
   left: -20vw;
-  width: 180px;
+  width: clamp(150px, 20vw, 220px);
   
   
 }
@@ -122,7 +122,7 @@ body {
 }
 
 .logo {
-  width: 160px;
+  width: clamp(120px, 12vw, 180px);
   height: auto;
   display: block;
   transition: transform 0.3s ease;
@@ -220,7 +220,6 @@ body {
   border-radius: 0;
   background: transparent;
 }
-.hero-image { line-height: 0; }
 
 
 /* === Typography === */
@@ -245,10 +244,7 @@ h2 {
 h3 {
   font-size: clamp(1.25rem, 2vw + 0.5rem, 1.5rem);
 }
-
-section {
-  margin-bottom: 2.5rem;
-}
+section { margin-bottom: 0; }
 
 /* === Cards === */
 
@@ -259,11 +255,9 @@ section {
   border: 0;
   box-shadow: none;
   border-radius: 0;
-  max-width: 900px;
-  margin: 0.5rem auto var(--card-gap);
+  max-width: 900px;  /* matches .card constraint */
+  margin: 0.5rem auto 0;
 }
-
-
 
 .hero-image-placeholder {
   width: 100%;
@@ -280,7 +274,9 @@ section {
   margin-top: 0.5rem;
 }
 
-.card:last-of-type:not(.card--hero-placeholder) { margin-bottom: 0; }
+.card:last-of-type {
+  margin-bottom: 0;
+}
 
 /* === Download Badge === */
 
@@ -316,13 +312,13 @@ section {
 /* Animation placeholders */
 .animation-placeholder {
   width: 100%;
-  height: 200px;
+  height: clamp(12rem, 30vh, 16rem);
   background-color: #ccc;
   display: block;
   margin: 1rem 0;
   text-align: center;
   font-style: italic;
-  line-height: 200px;
+  line-height: clamp(12rem, 30vh, 16rem);
   color: #555;
 }
 
@@ -381,14 +377,14 @@ footer:not(.custom-footer) {
 }
 
 .footer-logo img {
-  width: 140px;
+  width: clamp(110px, 12vw, 160px);
   max-width: 100%;
   height: auto;
 }
 
 .footer-social img {
-  width: 60px;
-  height: 60px;
+  width: clamp(44px, 6vw, 64px);
+  height: clamp(44px, 6vw, 64px);
   display: block;
 }
 
@@ -431,15 +427,6 @@ text-align: right;
 /* Responsive layout */
 @media (max-width: 768px) {
   
-  /* Smaller gap under the hero image on mobile */
-:root { --card-gap: 0.75rem; }  /* tweak to taste */
-
-/* Reduce space *between* stacked cards on mobile */
-.card + .card { margin-top: 0.75rem; }
-
-/* (Optional) If sections add extra space, trim their bottom margin */
-section { margin-bottom: 1.5rem; }
-
 .footer-content {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -467,6 +454,7 @@ section { margin-bottom: 1.5rem; }
   grid-column: 2;
   justify-self: center;
 }
+
 }
 
 /* === Keyframes === */
@@ -479,6 +467,7 @@ section { margin-bottom: 1.5rem; }
 
 @media (max-width: 768px) {
   /* removed redundant .hamburger mobile display */
+
 }
 
 /* === Hero Placeholder (mobile-first base) === */
@@ -508,6 +497,7 @@ section { margin-bottom: 1.5rem; }
 
 @media (max-width: 768px) {
   body { background-attachment: scroll; }
+
 }
 /* === Mobile overflow safety (site-wide) === */
 html, body { overflow-x: hidden; }
@@ -537,7 +527,8 @@ img, svg, video { max-width: 100%; height: auto; }
   border-radius: 16px;
   margin: 1rem auto;
 }
-@media (max-width: 768px) { .media-md { max-width: 100%; } }
+@media (max-width: 768px) { .media-md { max-width: 100%; } 
+}
 
 .list-disc-left {
   text-align: left !important;
@@ -553,7 +544,9 @@ img, svg, video { max-width: 100%; height: auto; }
    Keep logo/menu, hero, cards, and footer content aligned.
    Change --content-max to adjust the site width globally.
 */
-:root { --content-max: 900px; --card-gap: 1.25rem; }
+:root {--content-max: 900px;
+}
+
 .top-header,
 .hero-area,
 .hero-headline,
@@ -703,6 +696,7 @@ img, svg, video { max-width: 100%; height: auto; }
   --from: -20vw;
   --to: 120vw;
   --delay: 0s;
+  width: clamp(150px, 20vw, 220px);
 }
 h1.hero-headline {
 font-family: 'Atma', cursive;
@@ -713,13 +707,27 @@ font-weight: 700 !important;
 
 
 /* Per-cloud paths + stagger (based on your previous setup; tweak if needed) */
-.cloud1 { --from: -20vw;  --to: 110vw; --delay: -30s; }
-.cloud2 { --from: -300px; --to: 160vw; --delay: -35s; }
-.cloud3 { --from: -200px; --to: 140vw; --delay: -25s; }
-.cloud4 { --from: -20vw;  --to: 120vw; --delay: -10s; }
-.cloud5 { --from: -300px; --to: 160vw; --delay: -20s; }
-.cloud6 { --from: -200px; --to: 140vw; --delay: -55s; }
-.cloud7 { --from: -20vw;  --to: 120vw; --delay: -35s; }
+.cloud1 { --from: -20vw;  --to: 110vw; --delay: -30s; 
+  width: clamp(160px, 22vw, 240px);
+}
+.cloud2 { --from: -300px; --to: 160vw; --delay: -35s; 
+  width: clamp(140px, 18vw, 200px);
+}
+.cloud3 { --from: -200px; --to: 140vw; --delay: -25s; 
+  width: clamp(120px, 16vw, 180px);
+}
+.cloud4 { --from: -20vw;  --to: 120vw; --delay: -10s; 
+  width: clamp(150px, 20vw, 220px);
+}
+.cloud5 { --from: -300px; --to: 160vw; --delay: -20s; 
+  width: clamp(120px, 16vw, 180px);
+}
+.cloud6 { --from: -200px; --to: 140vw; --delay: -55s; 
+  width: clamp(100px, 12vw, 150px);
+}
+.cloud7 { --from: -20vw;  --to: 120vw; --delay: -35s; 
+  width: clamp(150px, 20vw, 220px);
+}
 /* Clouds — WAAPI/JS controls movement + opacity */
 
 .clouds {
@@ -745,36 +753,83 @@ font-weight: 700 !important;
 }
 
 /* Per-cloud paths + stagger (for JS to read) */
-.cloud1 { --from: -20vw;  --to: 110vw; --delay: -30s; }
-.cloud2 { --from: -300px; --to: 160vw; --delay: -35s; }
-.cloud3 { --from: -200px; --to: 140vw; --delay: -25s; }
-.cloud4 { --from: -20vw;  --to: 120vw; --delay: -10s; }
-.cloud5 { --from: -300px; --to: 160vw; --delay: -20s; }
-.cloud6 { --from: -200px; --to: 140vw; --delay: -55s; }
-.cloud7 { --from: -20vw;  --to: 120vw; --delay: -35s; }
+.cloud1 { --from: -20vw;  --to: 110vw; --delay: -30s; 
+  width: clamp(160px, 22vw, 240px);
+}
+.cloud2 { --from: -300px; --to: 160vw; --delay: -35s; 
+  width: clamp(140px, 18vw, 200px);
+}
+.cloud3 { --from: -200px; --to: 140vw; --delay: -25s; 
+  width: clamp(120px, 16vw, 180px);
+}
+.cloud4 { --from: -20vw;  --to: 120vw; --delay: -10s; 
+  width: clamp(150px, 20vw, 220px);
+}
+.cloud5 { --from: -300px; --to: 160vw; --delay: -20s; 
+  width: clamp(120px, 16vw, 180px);
+}
+.cloud6 { --from: -200px; --to: 140vw; --delay: -55s; 
+  width: clamp(100px, 12vw, 150px);
+}
+.cloud7 { --from: -20vw;  --to: 120vw; --delay: -35s; 
+  width: clamp(150px, 20vw, 220px);
+}
 
 /* Cloud speeds override (relaxed, big = slower, small = faster)
 Include this AFTER your main styles.css or paste near the end of styles.css.
 Requires clouds-waapi.per-cloud-duration.js (supports --duration). */
  
 /* Largest ≈ 200px */
-.cloud1 { --duration: 180s; }  /* slowest */
+.cloud1 { --duration: 180s; 
+  width: clamp(160px, 22vw, 240px);
+}  /* slowest */
  
 /* Large ≈ 180px */
-.cloud4 { --duration: 165s; }
-.cloud7 { --duration: 165s; }
+.cloud4 { --duration: 165s; 
+  width: clamp(150px, 20vw, 220px);
+}
+.cloud7 { --duration: 165s; 
+  width: clamp(150px, 20vw, 220px);
+}
  
 /* Medium ≈ 170px */
-.cloud2 { --duration: 150s; }
+.cloud2 { --duration: 150s; 
+  width: clamp(140px, 18vw, 200px);
+}
 
 /* Smaller ≈ 150px */
-.cloud3 { --duration: 135s; }
-.cloud5 { --duration: 135s; }
+.cloud3 { --duration: 135s; 
+  width: clamp(120px, 16vw, 180px);
+}
+.cloud5 { --duration: 135s; 
+  width: clamp(120px, 16vw, 180px);
+}
  
 /* Smallest ≈ 120px */
-.cloud6 { --duration: 120s; }  /* fastest (still relaxed) */
+.cloud6 { --duration: 120s; 
+  width: clamp(100px, 12vw, 150px);
+}  /* fastest (still relaxed) */
 
 /* --- Hamburger/menu safety patch (2025-08-10) --- */
 .top-header { position: relative; z-index: 10; }
 .hamburger { position: relative; z-index: 11; }
 .mobile-nav { z-index: 1000; }
+/* Unified section spacing */
+section + section { margin-top: var(--stack-gap); }
+
+/* Between cards spacing */
+.card + .card { margin-top: var(--stack-gap); }
+
+.hero-image { line-height: 0; }
+
+/* === Canonical spacing tokens (edit here only) === */
+:root {
+} /* desktop & tablet */
+@media (max-width: 768px) { :root {
+} } /* mobile */
+
+/* === Canonical spacing tokens — edit here === */
+:root { --stack-gap: 2rem; }
+@media (max-width: 768px) {
+  :root { --stack-gap: 1.5rem; }
+}

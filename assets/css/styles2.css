@@ -30,10 +30,7 @@ img, svg, video { max-width: 100%; height: auto; }
 /* Global CSS variables (content width, spacing, card palette, shadows) */
 :root {
   --content-max: 900px;     /* global content clamp */
-  --header-spacer: 2rem;    
-  --space-under-header: 3rem;
-  --hero-gap-bottom: 1.25rem;
-/* vertical rhythm under header */
+  --header-spacer: 2rem;    /* vertical rhythm under header */
 
   /* Picture-book card palette (opaque cream on blue sky) */
   --card-rgb: 255, 252, 245;     /* #FFFCF5 */
@@ -72,7 +69,7 @@ img, svg, video { max-width: 100%; height: auto; }
   justify-content: space-between;
   align-items: flex-end;
   flex-wrap: wrap;
-  margin-bottom: var(--space-under-header);
+  margin-bottom: var(--header-spacer);
   z-index: 10; /* ensure above clouds */
 }
 
@@ -158,8 +155,8 @@ img, svg, video { max-width: 100%; height: auto; }
   display: block;
   max-width: calc(var(--content-max) - 1rem);
   width: 100%;
-  margin: 0 auto var(--hero-gap-bottom);
-text-align: center;
+  margin: 0 auto var(--header-spacer, 1.25rem);
+  text-align: center;
   line-height: 1.1;
   font-size: clamp(2.2rem, 5vw, 3.2rem);
   text-wrap: balance;
@@ -177,7 +174,7 @@ h1.hero-headline {
 
 /* 16:9 (or banner) hero placeholder */
 .hero-placeholder {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 6;
   max-width: var(--content-max);
   width: 100%;
   margin: 0 auto var(--header-spacer, 1.25rem);
@@ -256,16 +253,7 @@ section { margin-bottom: 2.5rem; }
   border-radius: 16px;
   margin: 1rem auto;
 }
-@media (max-width: 768px) { .media-md { max-width: 100%; } 
-  /* Stronger on small screens */
-  h1.hero-headline {
-    text-shadow:
-      0.09em 0.09em 0.24em rgba(0, 0, 0, 0.65),
-      0 0 0.44em rgba(74, 144, 226, 1);
-    /* Optional: extra clarity on some devices */
-    /* -webkit-text-stroke: 0.5px rgba(11, 18, 32, 0.35); */
-  }
-}
+@media (max-width: 768px) { .media-md { max-width: 100%; } }
 
 .list-disc-left {
   text-align: left !important;
@@ -457,13 +445,15 @@ footer:not(.custom-footer) {
     justify-self: center;
   }
   /* Stronger on small screens */
-h1.hero-headline {
+@media (max-width: 768px) {
+  h1.hero-headline {
     text-shadow:
       0.09em 0.09em 0.24em rgba(0, 0, 0, 0.65),
       0 0 0.44em rgba(74, 144, 226, 1);
     /* Optional: extra clarity on some devices */
     /* -webkit-text-stroke: 0.5px rgba(11, 18, 32, 0.35); */
   }
+}
 }
 
 /* === 11) Accessibility/Preference queries =============================== */

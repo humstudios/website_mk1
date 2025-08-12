@@ -1,4 +1,4 @@
-<!DOCTYPE html> <html lang="en">
+<!DOCTYPE html> <html class="auto-dim" lang="en">
 <head>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -19,30 +19,30 @@
 </div>
 <div class="container">
 <div class="top-header" style="position: relative">
-<a href="index.html">
+<a href="index.html" aria-label="Hum Studios home">
 <img alt="Hum Studios Logo" class="logo" src="assets/img/logos/Weblogo01.png"/>
 </a>
 <div aria-controls="mobileMenu" aria-expanded="false" aria-label="Menu" class="hamburger" id="hamburgerBtn" role="button" tabindex="0">
 <div></div><div></div><div></div>
 </div>
-<nav class="top-nav desktop">
-<a href="index.html">Home</a>
-<a href="contact.html">Contact</a>
-<a href="privacy.html">Privacy Policy</a>
+<nav class="top-nav desktop" aria-label="Primary navigation">
+<a href="index.html" aria-label="Home">Home</a>
+<a href="contact.html" aria-label="Contact" aria-current="page">Contact</a>
+<a href="privacy.html" aria-label="Privacy Policy">Privacy Policy</a>
 </nav>
-<nav aria-hidden="true" class="mobile-nav" id="mobileMenu">
-<a href="index.html">Home</a>
-<a href="contact.html">Contact</a>
-<a href="privacy.html">Privacy</a>
+<nav aria-hidden="true" class="mobile-nav" id="mobileMenu" aria-label="Mobile navigation">
+<a href="index.html" aria-label="Home">Home</a>
+<a href="contact.html" aria-label="Contact" aria-current="page">Contact</a>
+<a href="privacy.html" aria-label="Privacy">Privacy</a>
 </nav></div>
 <header>
 <h1 class="hero-headline break-control"><span class="nowrap">Little Stories, </span><wbr><span class="nowrap">Big Adventures!</span></h1>
 </header>
 <main id="main" role="main">
 <section class="card">
-<h3>Contact Us</h3>
+<h2>Contact Us</h2>
 <p>If you have any questions about our apps or stories, or if you need support, please use the form below. We’ll get back to you as soon as possible.</p>
-<form action="/.netlify/functions/contact" method="POST" id="contactForm">
+<form aria-label="Contact form" action="/.netlify/functions/contact" method="POST" id="contactForm">
 <label for="email">Email</label><br/>
 <input id="email" name="email" placeholder="you@example.com" required="" style="width:100%;padding:1rem;margin:0.5rem 0;" type="email"/><br/>
 <label for="name">Name</label><br/>
@@ -70,17 +70,16 @@
 </a>
 </div>
 <div class="footer-menu">
-<nav>
-<ul>
+<nav aria-label="Footer navigation"><ul>
 </li>
 <li>
-<a href="contact.html"> Contact </a>
+<a href="contact.html" aria-label="Contact" aria-current="page">Contact</a>
 </li>
 <li>
-<a href="privacy.html"> Privacy </a>
+<a href="privacy.html" aria-label="Privacy">Privacy</a>
 </li>
 <li>
-<a href="cookies.html"> Cookies </a>
+<a href="cookies.html" aria-label="Cookies"> Cookies </a>
 </li>
 </ul>
 </nav>
@@ -94,5 +93,9 @@
 </footer>
 <script async="" defer="" src="https://www.google.com/recaptcha/api.js"></script>
 <script defer src="assets/js/clouds-waapi.js"></script><script defer src="assets/js/main.js?v=7"></script>
+
+<button id="dim-toggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dim mode"></button>
+
+<script defer src="assets/js/dim-toggle.js?v=3"></script>
 </body>
 </html>

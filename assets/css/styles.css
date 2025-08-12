@@ -3,8 +3,8 @@
    Purpose: Deduped, conflict-free, behavior-preserving.
    Notes:
    - Two requested edits applied:
-     • .hero-headline { margin: 0 auto 1.25rem; }
-     • .top-header { margin-bottom: 2.5rem; align-items: flex-end; }
+     • .hero-headline { margin: 0 auto var(--hero-gap-bottom); }
+     • .top-header { margin-bottom: var(--hero-gap-top); align-items: flex-end; }
    - Footer columns are bottom-aligned across breakpoints.
    - Canonical spacing token --stack-gap is at the very bottom.
    ===================================================== */
@@ -53,20 +53,20 @@ img, svg, video { max-width: 100%; height: auto; }
   will-change: transform, opacity;
   opacity: initial;
   /* defaults for WAAPI (per-cloud overrides below) */
-  --from: -20vw;
-  --to: 120vw;
+  --from: -25vw;
+  --to: 125vw;
   --delay: 0s;
   --duration: 150s;
 }
 
 /* Per-cloud positions + sizes (keep original pixel widths) */
-.cloud1 { top: 2.3%; left: -15vw; width: 200px; --from: -20vw;  --to: 110vw; --delay: -30s; --duration: 180s; }
-.cloud2 { top: 19%;  left: -2vw;  width: 170px; --from: -300px; --to: 160vw; --delay: -35s; --duration: 150s; }
-.cloud3 { top: 29%;  left: -8vw;  width: 150px; --from: -200px; --to: 140vw; --delay: -25s; --duration: 135s; }
-.cloud4 { top: 42%;  left: -5vw;  width: 180px; --from: -20vw;  --to: 120vw; --delay: -10s; --duration: 165s; }
-.cloud5 { top: 57%;  left: -12vw; width: 150px; --from: -300px; --to: 160vw; --delay: -20s; --duration: 135s; }
-.cloud6 { top: 72%;  left: -12vw; width: 140px; --from: -200px; --to: 140vw; --delay: -55s; --duration: 110s; }
-.cloud7 { top: 87%;  left: -20vw; width: 180px; --from: -20vw;  --to: 120vw; --delay: -35s; --duration: 165s; }
+.cloud1 { top: 2.3%; left: -15vw; width: clamp(110px, 16.67vw, 200px); --from: -25vw;  --to: 125vw; --delay: -30s; --duration: 180s; }
+.cloud2 { top: 19%;  left: -2vw;  width: clamp(94px, 14.17vw, 170px); --from: -25vw; --to: 125vw; --delay: -35s; --duration: 150s; }
+.cloud3 { top: 29%;  left: -8vw;  width: clamp(82px, 12.5vw, 150px); --from: -25vw; --to: 125vw; --delay: -25s; --duration: 135s; }
+.cloud4 { top: 42%;  left: -5vw;  width: clamp(99px, 15.0vw, 180px); --from: -25vw;  --to: 125vw; --delay: -10s; --duration: 165s; }
+.cloud5 { top: 57%;  left: -12vw; width: clamp(82px, 12.5vw, 150px); --from: -25vw; --to: 125vw; --delay: -20s; --duration: 135s; }
+.cloud6 { top: 72%;  left: -12vw; width: clamp(80px, 11.67vw, 140px); --from: -25vw; --to: 125vw; --delay: -55s; --duration: 110s; }
+.cloud7 { top: 87%;  left: -20vw; width: clamp(99px, 15.0vw, 180px); --from: -25vw;  --to: 125vw; --delay: -35s; --duration: 165s; }
 
 /* === Layout === */
 .container {
@@ -86,7 +86,7 @@ img, svg, video { max-width: 100%; height: auto; }
   justify-content: space-between;
   align-items: flex-end;       /* bottom-align menu with logo (as requested) */
   flex-wrap: wrap;
-  margin-bottom: 3rem;       /* extra space ABOVE hero headline */
+  margin-bottom: var(--hero-gap-top);       /* extra space ABOVE hero headline */
   z-index: 10;                 /* menu safety */
 }
 
@@ -191,7 +191,7 @@ h1.hero-headline {
   display: block;
   max-width: calc(var(--content-max) - 1rem);
   width: 100%;
-  margin: 0 auto 1.5rem;     /* decoupled: bottom gap fixed */
+  margin: 0 auto var(--hero-gap-bottom);     /* decoupled: bottom gap fixed */
   text-align: center;
   line-height: 1.1;
   font-size: clamp(2.2rem, 5vw, 3.2rem);
@@ -207,7 +207,9 @@ h1.hero-headline {
 .top-header .logo img { display: block; height: auto; }
 
 /* === Cards === */
-:root { --content-max: 900px; } /* site width clamp */
+:root { --content-max: 900px;   --hero-gap-top: 3rem;
+  --hero-gap-bottom: 1.5rem;
+} /* site width clamp */
 
 .top-header,
 .hero-area,
@@ -225,7 +227,7 @@ h1.hero-headline {
   width: 100%;
   margin-inline: auto;
   border-radius: 48px;
-  padding: 2rem;
+  padding: clamp(1.25rem, 5vw, 2rem);
 
   background: rgba(255, 252, 245, 1);
   color: rgba(17, 24, 39, 1);
@@ -335,7 +337,7 @@ footer:not(.custom-footer) {
   font-size: 0.75rem;
   max-width: var(--content-max);
   margin: 0 auto;
-  line-height: 1.3;
+  line-height: 1.2;
   margin-top: 0.3rem;
   margin-bottom: 0.3rem;
 }
@@ -418,21 +420,160 @@ section + section { margin-top: var(--stack-gap); }
 /* Long H2 helper for tiny screens */
 @media (max-width: 390px) {
   h2.h2--long {
-    font-size: clamp(1.12rem, 4.6vw + 0.05rem, 1.38rem);
+    font-size: clamp(1.08rem, 4.6vw + 0.05rem, 1.38rem);
     line-height: 1.2;
     text-wrap: balance;
     hyphens: auto;
   }
 }
-@media (max-width: 340px) {
-  h2.h2--long { font-size: clamp(1.08rem, 5vw, 1.3rem); }
+@media (max-width: 390px) {
+  h3.h3--long {
+    font-size: clamp(1.00rem, 4.2vw + 0.02rem, 1.25rem);
+    line-height: 1.25;
+    text-wrap: balance;
+    hyphens: auto;
+  }
 }
+
+
+
 
 /* Tiny phones: reduce card padding to improve headline line-length */
-@media (max-width: 390px) {
-  .card { padding: 1.25rem; }
-}
-
 /* === Canonical spacing tokens — EDIT HERE ONLY === */
 :root { --stack-gap: 2rem; }              /* desktop & tablet */
 @media (max-width: 768px) { :root { --stack-gap: 1.5rem; } } /* mobile */
+
+@media (max-width: 768px) {
+  :root {
+    /* Increase breathing room on small screens */
+    --hero-gap-top: clamp(1rem, 4.5vw, 2rem);
+    --hero-gap-bottom: clamp(1rem, 3.5vw, 1.5rem);
+  }
+}
+
+/* Show only the first three clouds */
+  .cloud:nth-child(-n+3 of .cloud) { display: block; }
+}
+
+/* Fallback for browsers without :nth-child(... of .selector) support */
+@supports not selector(:nth-child(1 of .cloud)) {
+  @media (max-height: 420px) {
+    .cloud { display: none; }
+    /* Show only three specific clouds as a fallback */
+    .cloud1, .cloud2, .cloud3 { display: block; }
+  }
+}
+
+/* Optional: force only TWO clouds by adding .clouds--low-density to the container */
+.clouds--low-density .cloud { display: none; }
+.clouds--low-density .cloud:nth-child(-n+2 of .cloud) { display: block; }
+@supports not selector(:nth-child(1 of .cloud)) {
+  .clouds--low-density .cloud1,
+  .clouds--low-density .cloud2 { display: block; }
+}
+
+/* Tiered cloud density by viewport height */
+/* Modern selector version */
+@media (max-height: 420px) {
+  .cloud { display: none; }
+  .cloud:nth-child(-n+2 of .cloud) { display: block; } /* 2 clouds on very short viewports */
+}
+
+@media (min-height: 421px) and (max-height: 560px) {
+  .cloud { display: none; }
+  .cloud:nth-child(-n+3 of .cloud) { display: block; } /* 3 clouds on short viewports */
+}
+
+@media (min-height: 561px) and (max-height: 720px) {
+  .cloud { display: none; }
+  .cloud:nth-child(-n+4 of .cloud) { display: block; } /* 4 clouds on medium-short viewports */
+}
+
+/* Fallback for older browsers without :nth-child(... of .selector) */
+@supports not selector(:nth-child(1 of .cloud)) {
+  @media (max-height: 420px) {
+    .cloud { display: none; }
+    .cloud1, .cloud2 { display: block; }
+  }
+  @media (min-height: 421px) and (max-height: 560px) {
+    .cloud { display: none; }
+    .cloud1, .cloud2, .cloud3 { display: block; }
+  }
+  @media (min-height: 561px) and (max-height: 720px) {
+    .cloud { display: none; }
+    .cloud1, .cloud2, .cloud3, .cloud4 { display: block; }
+  }
+}
+
+/* Footer logo tweaks on small screens: smaller + bottom-aligned with menu/social */
+@media (max-width: 768px) {
+  .footer-logo { align-self: end; }
+  .footer-logo img { 
+    display: block;                 /* remove inline-image baseline gap */
+    width: clamp(88px, 10vw, 120px);
+    height: auto;
+  }
+}
+
+/* Smaller social icons on small screens to match reduced footer logo */
+@media (max-width: 768px) {
+  .footer-social img {
+    width: clamp(32px, 5.5vw, 48px);
+    height: clamp(32px, 5.5vw, 48px);
+  }
+}
+
+/* Larger gap above company information on wide screens */
+@media (min-width: 1024px) {
+  .footer-bottom {
+    /* Increase breathing room between footer columns and the company info block */
+    margin-top: clamp(0.75rem, 1.5vw, 1.75rem);
+  }
+}
+
+/* Slightly smaller footer menu text on small screens to reduce footer height */
+@media (max-width: 768px) {
+  .footer-menu nav ul li a {
+    /* Smaller text + tighter line-height to reduce overall footer height */
+    font-size: clamp(0.88rem, 3vw, 0.95rem);
+    line-height: 1.15; /* tight but safe for 2-line wraps */
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-menu nav ul li {
+    margin-bottom: 0.15rem;
+  }
+  .footer-menu nav ul li:last-child { margin-bottom: 0; }
+}
+
+/* Shrink base font size on small screens (<=768px) so rem-based text scales down */
+@media (max-width: 768px) {
+  html {
+    font-size: 15px; /* was 16px default; keeps readability while reducing layout height */
+  }
+}
+
+@media (max-width: 360px) {
+  html { font-size: 14px; } /* ensure labels don't wrap awkwardly */
+}
+
+/* Manual line-break control for headlines that use <wbr> */
+.break-control {
+  /* Disable balancing so manual break points are respected */
+  text-wrap: wrap;
+  overflow-wrap: normal;
+  hyphens: manual;
+}
+/* Keep selected chunks unbroken so <wbr> becomes the preferred break */
+.nowrap { white-space: nowrap; }
+
+/* Safety fallback: on ultra-narrow screens allow wrapping to avoid overflow */
+@media (max-width: 360px) {
+  .break-control { text-wrap: balance; } /* regain niceness on tiny widths */
+  .nowrap { white-space: normal; }
+}
+
+/* Ensure a space appears after <wbr> when no line break occurs,
+   but avoid a leading space when the break *does* happen */
+.break-control wbr::after { content: " "; }

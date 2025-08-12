@@ -61,11 +61,11 @@ img, svg, video { max-width: 100%; height: auto; }
 
 /* Per-cloud positions + sizes (keep original pixel widths) */
 .cloud1 { top: 2.3%; left: -15vw; width: clamp(110px, 16.67vw, 200px); --from: -25vw;  --to: 125vw; --delay: -30s; --duration: 180s; }
-.cloud2 { top: 19%;  left: -2vw;  width: clamp(94px, 14.17vw, 170px); --from: -25vw; --to: 125vw; --delay: -35s; --duration: 150s; }
+.cloud2 { top: 20%;  left: -2vw;  width: clamp(94px, 14.17vw, 170px); --from: -25vw; --to: 125vw; --delay: -35s; --duration: 150s; }
 .cloud3 { top: 29%;  left: -8vw;  width: clamp(82px, 12.5vw, 150px); --from: -25vw; --to: 125vw; --delay: -25s; --duration: 135s; }
-.cloud4 { top: 42%;  left: -5vw;  width: clamp(99px, 15.0vw, 180px); --from: -25vw;  --to: 125vw; --delay: -10s; --duration: 165s; }
+.cloud4 { top: 43%;  left: -5vw;  width: clamp(99px, 15.0vw, 180px); --from: -25vw;  --to: 125vw; --delay: -10s; --duration: 165s; }
 .cloud5 { top: 57%;  left: -12vw; width: clamp(82px, 12.5vw, 150px); --from: -25vw; --to: 125vw; --delay: -20s; --duration: 135s; }
-.cloud6 { top: 72%;  left: -12vw; width: clamp(80px, 11.67vw, 140px); --from: -25vw; --to: 125vw; --delay: -55s; --duration: 110s; }
+.cloud6 { top: 71%;  left: -12vw; width: clamp(80px, 11.67vw, 140px); --from: -25vw; --to: 125vw; --delay: -55s; --duration: 110s; }
 .cloud7 { top: 87%;  left: -20vw; width: clamp(99px, 15.0vw, 180px); --from: -25vw;  --to: 125vw; --delay: -35s; --duration: 165s; }
 
 /* === Layout === */
@@ -453,7 +453,7 @@ section + section { margin-top: var(--stack-gap); }
 
 /* Show only the first three clouds */
   .cloud:nth-child(-n+3 of .cloud) { display: block; }
-}
+
 
 /* Fallback for browsers without :nth-child(... of .selector) support */
 @supports not selector(:nth-child(1 of .cloud)) {
@@ -581,9 +581,9 @@ section + section { margin-top: var(--stack-gap); }
 
 /* === Dim mode overlay (Option A) ==================================== */
 :root { --dim-strength: 0; }
-html.theme-dim { --dim-strength: 0.18; }
+html.theme-dim { --dim-strength: 0.23; }
 @media (prefers-color-scheme: dark) {
-  html.auto-dim:not(.theme-dim-off) { --dim-strength: 0.18; }
+  html.auto-dim:not(.theme-dim-off) { --dim-strength: 0.23; }
 }
 body::before {
   content: "";
@@ -628,4 +628,13 @@ body::before {
 .theme-toggle .dim-label {
   font-weight: 600;
   letter-spacing: .02em;
+}
+/* Idle fade for the Dark/Light toggle */
+.theme-toggle { opacity: 1; transition: opacity 180ms ease; }
+.theme-toggle.is-idle { opacity: 0.28; }       /* faint but visible */
+.theme-toggle:hover,
+.theme-toggle:focus-visible { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle { transition: none; }
 }

@@ -4,7 +4,7 @@
    Notes:
    - Two requested edits applied:
      • .hero-headline { margin: 0 auto 1.25rem; }
-     • .top-header { margin-bottom: 2.5rem; align-items: flex-end; }
+     • .top-header { margin-bottom: var(--hero-gap-top); align-items: flex-end; }
    - Footer columns are bottom-aligned across breakpoints.
    - Canonical spacing token --stack-gap is at the very bottom.
    ===================================================== */
@@ -86,7 +86,7 @@ img, svg, video { max-width: 100%; height: auto; }
   justify-content: space-between;
   align-items: flex-end;       /* bottom-align menu with logo (as requested) */
   flex-wrap: wrap;
-  margin-bottom: 3rem;       /* extra space ABOVE hero headline */
+  margin-bottom: var(--hero-gap-top);       /* extra space ABOVE hero headline */
   z-index: 10;                 /* menu safety */
 }
 
@@ -207,7 +207,9 @@ h1.hero-headline {
 .top-header .logo img { display: block; height: auto; }
 
 /* === Cards === */
-:root { --content-max: 900px; } /* site width clamp */
+:root { --content-max: 900px; 
+  --hero-gap-top: 3rem;
+} /* site width clamp */
 
 .top-header,
 .hero-area,
@@ -437,18 +439,52 @@ section + section { margin-top: var(--stack-gap); }
 :root { --stack-gap: 2rem; }              /* desktop & tablet */
 @media (max-width: 768px) { :root { --stack-gap: 1.5rem; } } /* mobile */
 
-/* === Dark/Light toggle: fixed bottom-left, immune to footer/layout overrides === */
-#dim-toggle.theme-toggle {
+/* === Hero gap by breakpoint: set the variable so .top-header picks it up === */
+@media (max-width: 768px) and (min-width: 640px) { :root { --hero-gap-top: 2rem; } }
+@media (max-width: 639px) { :root { --hero-gap-top: 1.7rem; } }
+@media (max-width: 420px) { :root { --hero-gap-top: 1.5rem; } }
+@media (max-width: 360px) { :root { --hero-gap-top: 1.3rem; } }
+
+
+:root { --dim-level-manual: 0.18; --dim-level-auto: 0.18; --dim-strength: 0; }
+
+
+html.theme-dim { --dim-strength: var(--dim-level-manual); }
+
+
+@media (prefers-color-scheme: dark) {
+  html.auto-dim:not(.theme-dim-off) { --dim-strength: var(--dim-level-auto); }
+}
+
+
+/* Dim overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / var(--dim-strength));
+  pointer-events: none;
+  z-index: 2147483600 !important;
+  transition: background 180ms ease;
+}
+html.theme-dim-off body::before { content: none; }
+@media (prefers-color-scheme: light) {
+  html.auto-dim:not(.theme-dim) body::before { content: none; }
+}
+
+
+/* Dark/Light toggle — fixed bottom-left, above everything */
+#dim-toggle.theme-toggle{
   position: fixed !important;
-  inset: auto auto 1rem 1rem !important; /* bottom-left of viewport */
-  z-index: 2147483647 !important;       /* above overlay/footer */
+  inset: auto auto 1rem 1rem !important;
+  z-index: 2147483647 !important;
   display: inline-flex !important;
   align-items: center;
-  gap: 0.5rem;
-  width: auto !important;                /* defeat width:100% button rules */
+  gap: .5rem;
+  width: auto !important;
   min-width: 2.5rem;
   margin: 0 !important;
-  padding: 0.5rem 0.9rem;
+  padding: .5rem .9rem;
   border-radius: 999px;
   background: rgba(0,0,0,.6);
   color: #fff;
@@ -457,42 +493,8 @@ section + section { margin-top: var(--stack-gap); }
   pointer-events: auto !important;
   box-sizing: content-box;
 }
-/* Keep the dim overlay below the button */
-body::before { z-index: 2147483600 !important; pointer-events: none; }
-
-/* Toggle icon + label layout */
-.theme-toggle { display: inline-flex; align-items: center; gap: .5rem; }
-.dim-icon { line-height: 0; display: inline-flex; }
-.dim-label { font-size: 0.9375rem; }
-
-/* === Dim overlay (Option A) ========================================= */
-/* One knob for dim strength (0 = off) */
-:root { --dim-strength: 0; }
-
-/* Manual toggle: ON when .theme-dim is present */
-html.theme-dim { --dim-strength: 0.18; } /* adjust to taste */
-
-/* Auto-dim: when OS is dark AND user has not forced it off */
-@media (prefers-color-scheme: dark) {
-  html.auto-dim:not(.theme-dim-off) { --dim-strength: 0.18; } /* adjust to taste */
-}
-
-/* Translucent overlay that dims the entire page */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgb(0 0 0 / var(--dim-strength));
-  pointer-events: none;
-  z-index: 2147483600; /* below the toggle (see safety rule elsewhere) */
-  transition: background 180ms ease;
-}
-
-/* Ensure user forces OFF wins */
-html.theme-dim-off { --dim-strength: 0; }
-
-/* === Dim toggle idle fade ========================================== */
+/* Idle fade */
 .theme-toggle { opacity: 1; transition: opacity 180ms ease; }
-.theme-toggle.is-idle { opacity: 0.28; }                /* faint but visible */
+.theme-toggle.is-idle { opacity: 0.28; }
 .theme-toggle:hover, .theme-toggle:focus-visible { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .theme-toggle { transition: none; } }

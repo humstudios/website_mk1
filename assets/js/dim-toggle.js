@@ -1,96 +1,122 @@
-/* Hum Studios — Dark/Light (Dim) Toggle — v5
-   - Shows "Dark" when dim is OFF, "Light" when dim is ON
-   - Sun/Moon icon swaps; remembers user choice
-   - Auto-dim follows OS dark when no override is saved
-   - Robust to duplicate CSS; button can live anywhere in DOM
-*/
 (function () {
-  const KEY = "hum:dim"; // "on" | "off" | null (no override)
+  const KEY = "hum:dim"; // "on" | "off"
+  const IDLE_DELAY = 2000; // ms before fading the button
+  const PROXIMITY_PX = 96; // px radius to wake on pointer proximity
+
+  const html = document.documentElement;
   const btn = document.getElementById("dim-toggle");
   if (!btn) return;
 
-  // Ensure clean button content (no duplicates)
-  function renderButton(isOn) {
-    btn.innerHTML = ""; // wipe
-    // Icon
-    const icon = document.createElement("span");
-    icon.className = "dim-icon";
-    icon.setAttribute("aria-hidden", "true");
-    icon.innerHTML = isOn
-      // Moon for ON
-      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 14.1a8.7 8.7 0 1 1-11.5-11 1 1 0 0 1 1.2 1.2A6.7 6.7 0 1 0 20.2 12.9a1 1 0 0 1 1.2 1.2Z"/></svg>'
-      // Sun for OFF
-      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12Zm0-16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm0 18a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM3 11h1a1 1 0 1 1 0 2H3a1 1 0 1 1 0-2Zm16 0h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5.6 4.6a1 1 0 0 1 1.4 0L8 5.6a1 1 0 0 1-1.4 1.4L5.6 6a1 1 0 0 1 0-1.4Zm10.8 12.8a1 1 0 0 1 1.4 0l1 1a1 1 0 1 1-1.4 1.4l-1-1a1 1 0 0 1 0-1.4Zm1.4-12.8a1 1 0 0 1 0 1.4L17 7a1 1 0 0 1-1.4-1.4l0 0 1.8-1.8a1 1 0 0 1 1.4 0ZM6.4 17.4a1 1 0 0 1 0 1.4L4.6 20.6a1 1 0 1 1-1.4-1.4L5 17.4a1 1 0 0 1 1.4 0Z"/></svg>';
-    // Label
-    const label = document.createElement("span");
-    label.className = "dim-label";
-    label.textContent = isOn ? "Light" : "Dark";
-    btn.append(icon, label);
-    btn.setAttribute("aria-pressed", isOn ? "true" : "false");
-    btn.setAttribute("title", isOn ? "Switch to Light" : "Switch to Dark");
+  let idleTimer = null;
+
+  // --- helpers ---------------------------------------------------------------
+  const mqDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+
+  function savedPref() {
+    try { return localStorage.getItem(KEY); } catch { return null; }
+  }
+  function setSavedPref(v) {
+    try { localStorage.setItem(KEY, v); } catch {}
   }
 
-  const html = document.documentElement;
-  const mql = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
-  function osPrefersDark() { return mql ? mql.matches : false; }
-  function savedPref() { return localStorage.getItem(KEY); } // "on" | "off" | null
-
-  // Is dim active right now?
-  function isDimActive() {
-    const saved = savedPref();
-    if (saved === "on") return true;
-    if (saved === "off") return false;
-    // No override: auto-dim only if html has .auto-dim and OS prefers dark
-    return html.classList.contains("auto-dim") && osPrefersDark();
+  function effectiveDimActive() {
+    const val = getComputedStyle(document.documentElement).getPropertyValue("--dim-strength").trim();
+    const n = parseFloat(val || "0");
+    return !isNaN(n) && n > 0.001;
   }
 
-  function applyState() {
-    const on = isDimActive();
-    // Normalize classes
-    html.classList.toggle("theme-dim", on);
-    html.classList.toggle("theme-dim-off", !on && savedPref() === "off");
-    renderButton(on);
+  function setStateOn() {
+    html.classList.add("theme-dim");
+    html.classList.remove("theme-dim-off");
+    setSavedPref("on");
+    render();
   }
 
-  // Initial render
-  applyState();
+  function setStateOff() {
+    html.classList.add("theme-dim-off");
+    html.classList.remove("theme-dim");
+    setSavedPref("off");
+    render();
+  }
 
-  // Toggle handler
-  btn.addEventListener("click", function () {
-    const currentlyOn = isDimActive();
-    if (currentlyOn) {
-      localStorage.setItem(KEY, "off");
-      html.classList.remove("theme-dim");
-      html.classList.add("theme-dim-off");
-    } else {
-      localStorage.setItem(KEY, "on");
-      html.classList.add("theme-dim");
-      html.classList.remove("theme-dim-off");
+  function createIcon(mode) {
+    if (mode === "dark") {
+      // Moon
+      return '<svg class="dim-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21 12.79A9 9 0 0 1 11.21 3c-.28 0-.55.02-.82.05A1 1 0 0 0 9.7 4.78A7 7 0 1 0 19.22 14.3a1 1 0 0 0 1.73-.47c.03-.27.05-.54.05-.82"/></svg>';
     }
-    renderButton(!currentlyOn);
-  });
-
-  // Listen for OS theme changes only when there is no saved override
-  if (mql && mql.addEventListener) {
-    mql.addEventListener("change", function () {
-      if (savedPref() == null) applyState();
-    });
-  } else if (mql && mql.addListener) {
-    mql.addListener(function () {
-      if (savedPref() == null) applyState();
-    });
+    // Sun
+    return '<svg class="dim-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.76 4.84l-1.8-1.79L3.17 4.84l1.79 1.8l1.8-1.8ZM1 13h3v-2H1v2Zm10 10h2v-3h-2v3ZM4.84 20.83l1.79 1.8l1.8-1.8l-1.8-1.79l-1.79 1.79ZM20 13h3v-2h-3v2ZM16.24 4.84l1.8-1.79l1.79 1.79l-1.79 1.8l-1.8-1.8ZM11 1h2v3h-2V1Zm1 6a5 5 0 1 0 0 10a5 5 0 0 0 0-10Zm6.36 9.36l1.79 1.8l-1.79 1.79l-1.8-1.79l1.8-1.8Z"/></svg>';
   }
 
-  // Idle fade support (optional; harmless if CSS not present)
-  let idleTimer;
-  const IDLE_MS = 3000;
-  function wake() {
-    btn.classList.remove("is-idle");
+  function scheduleIdle() {
     clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => btn.classList.add("is-idle"), IDLE_MS);
+    idleTimer = setTimeout(() => {
+      if (!btn.matches(":hover") && document.activeElement !== btn) {
+        btn.classList.add("is-idle");
+      }
+    }, IDLE_DELAY);
   }
-  ["mousemove","keydown","touchstart","pointerdown","focus"].forEach(evt => {
-    window.addEventListener(evt, wake, { passive: true });
+
+  function wakeNow() {
+    btn.classList.remove("is-idle");
+    scheduleIdle();
+  }
+
+  function render() {
+    const dimActive = effectiveDimActive();
+    const labelText = dimActive ? "Light" : "Dark";
+    const icon = createIcon(dimActive ? "dark" : "light");
+
+    // Rebuild contents to avoid duplicates
+    btn.innerHTML = icon + '<span class="dim-label">' + labelText + '</span>';
+    btn.setAttribute("aria-pressed", dimActive ? "true" : "false");
+
+    // Ensure we actually start the idle timer even on touch-only devices
+    btn.classList.remove("is-idle");
+    scheduleIdle();
+  }
+
+  function pointerNearButton(evt) {
+    const r = btn.getBoundingClientRect();
+    const x = evt.clientX != null ? evt.clientX : (evt.touches && evt.touches[0] ? evt.touches[0].clientX : null);
+    const y = evt.clientY != null ? evt.clientY : (evt.touches && evt.touches[0] ? evt.touches[0].clientY : null);
+    if (x == null || y == null) return false;
+    const left = r.left - PROXIMITY_PX;
+    const top = r.top - PROXIMITY_PX;
+    const right = r.right + PROXIMITY_PX;
+    const bottom = r.bottom + PROXIMITY_PX;
+    return x >= left && x <= right && y >= top && y <= bottom;
+  }
+
+  // --- events ---------------------------------------------------------------
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    effectiveDimActive() ? setStateOff() : setStateOn();
   });
-  wake();
+
+  // Wake on focus/hover of the button itself
+  btn.addEventListener("mouseenter", wakeNow);
+  btn.addEventListener("focusin", wakeNow);
+
+  // Proximity wake for mouse/touch
+  window.addEventListener("pointermove", (evt) => { if (pointerNearButton(evt)) wakeNow(); }, { passive: true });
+  window.addEventListener("touchstart", (evt) => { if (pointerNearButton(evt)) wakeNow(); }, { passive: true });
+
+  // General activity also restarts the idle timer
+  window.addEventListener("scroll", scheduleIdle, { passive: true });
+  window.addEventListener("resize", scheduleIdle);
+  window.addEventListener("keydown", scheduleIdle);
+  window.addEventListener("pointerdown", scheduleIdle, { passive: true });
+
+  // Update label/icon if OS theme flips (and no explicit override)
+  const onMqChange = () => render();
+  if (mqDark && mqDark.addEventListener) mqDark.addEventListener("change", onMqChange);
+  else if (mqDark && mqDark.addListener) mqDark.addListener(onMqChange);
+
+  // --- init -----------------------------------------------------------------
+  const saved = savedPref();
+  if (saved === "on") setStateOn();
+  else if (saved === "off") setStateOff();
+  else render(); // no saved pref: render based on current CSS/OS
+
 })();

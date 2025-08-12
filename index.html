@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 
-<html class="auto-dim" lang="en">
+<html  lang="en">
 <head>
+<meta name="color-scheme" content="light dark">
+<script>
+/* Force Light on initial paint (ignore OS & stored) */
+(function(){
+  var h = document.documentElement;
+  h.setAttribute('data-theme','light');
+  h.classList.remove('theme-dim'); h.classList.remove('theme-dim-off');
+  try {
+    localStorage.setItem('display-mode','light');
+    localStorage.removeItem('theme-preference'); // legacy key
+  } catch(e){}
+})();
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Hum Studios | Interactive Stories</title>
@@ -33,7 +46,7 @@
 <meta name="twitter:image" content="https://www.humstudios.com/assets/img/logos/Weblogo01.png">
 
 <!-- Styles -->
-<link rel="stylesheet" href="assets/css/styles.css?v=9">
+<link rel="stylesheet" href="assets/css/styles.css?v=10">
 </head>
 <body><a class="skip-link" href="#main">Skip to content</a>
 <div class="clouds">
@@ -214,7 +227,7 @@
 </footer>
 <script defer="" src="assets/js/clouds-waapi.js"></script><script defer="" src="assets/js/main.js?v=7"></script>
 
-<button id="dim-toggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark mode"></button>
-<script defer src="assets/js/dim-toggle.js?v=4"></script>
+<script defer src="assets/js/theme-toggle.v2.js"></script>
+<button id="theme-toggle" class="theme-toggle" type="button">Auto</button>
 </body>
 </html>

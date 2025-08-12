@@ -1,96 +1,96 @@
+/* Hum Studios — Dark/Light (Dim) Toggle — v5
+   - Shows "Dark" when dim is OFF, "Light" when dim is ON
+   - Sun/Moon icon swaps; remembers user choice
+   - Auto-dim follows OS dark when no override is saved
+   - Robust to duplicate CSS; button can live anywhere in DOM
+*/
 (function () {
-  const KEY = "hum:dim"; // "on" | "off" | null
-  const IDLE_MS = 3000;
-  const html = document.documentElement;
+  const KEY = "hum:dim"; // "on" | "off" | null (no override)
   const btn = document.getElementById("dim-toggle");
   if (!btn) return;
 
-  const mql = window.matchMedia("(prefers-color-scheme: dark)");
-
-  // Ensure base classes exist (auto-dim can be set on <html> in markup)
-  // Restore user choice
-  const saved = localStorage.getItem(KEY);
-  if (saved === "on") {
-    html.classList.add("theme-dim");
-    html.classList.remove("theme-dim-off");
-  } else if (saved === "off") {
-    html.classList.add("theme-dim-off");
-    html.classList.remove("theme-dim");
+  // Ensure clean button content (no duplicates)
+  function renderButton(isOn) {
+    btn.innerHTML = ""; // wipe
+    // Icon
+    const icon = document.createElement("span");
+    icon.className = "dim-icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.innerHTML = isOn
+      // Moon for ON
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 14.1a8.7 8.7 0 1 1-11.5-11 1 1 0 0 1 1.2 1.2A6.7 6.7 0 1 0 20.2 12.9a1 1 0 0 1 1.2 1.2Z"/></svg>'
+      // Sun for OFF
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12Zm0-16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm0 18a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM3 11h1a1 1 0 1 1 0 2H3a1 1 0 1 1 0-2Zm16 0h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5.6 4.6a1 1 0 0 1 1.4 0L8 5.6a1 1 0 0 1-1.4 1.4L5.6 6a1 1 0 0 1 0-1.4Zm10.8 12.8a1 1 0 0 1 1.4 0l1 1a1 1 0 1 1-1.4 1.4l-1-1a1 1 0 0 1 0-1.4Zm1.4-12.8a1 1 0 0 1 0 1.4L17 7a1 1 0 0 1-1.4-1.4l0 0 1.8-1.8a1 1 0 0 1 1.4 0ZM6.4 17.4a1 1 0 0 1 0 1.4L4.6 20.6a1 1 0 1 1-1.4-1.4L5 17.4a1 1 0 0 1 1.4 0Z"/></svg>';
+    // Label
+    const label = document.createElement("span");
+    label.className = "dim-label";
+    label.textContent = isOn ? "Light" : "Dark";
+    btn.append(icon, label);
+    btn.setAttribute("aria-pressed", isOn ? "true" : "false");
+    btn.setAttribute("title", isOn ? "Switch to Light" : "Switch to Dark");
   }
 
-  // Helpers
-  const has = (c) => html.classList.contains(c);
-  const setPressed = (on) => btn.setAttribute("aria-pressed", on ? "true" : "false");
+  const html = document.documentElement;
+  const mql = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+  function osPrefersDark() { return mql ? mql.matches : false; }
+  function savedPref() { return localStorage.getItem(KEY); } // "on" | "off" | null
 
-  const sunSVG = '<svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 4.5a1 1 0 0 1 1-1h0a1 1 0 1 1-2 0h0a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1h0a1 1 0 1 1-2 0h0a1 1 0 0 1 1-1zM4.5 12a1 1 0 0 1-1 1h0a1 1 0 1 1 0-2h0a1 1 0 0 1 1 1zm16 0a1 1 0 0 1 1-1h0a1 1 0 1 1 0 2h0a1 1 0 0 1-1-1zM6.2 6.2a1 1 0 1 1-1.4-1.4h0a1 1 0 1 1 1.4 1.4zm13 13a1 1 0 1 1-1.4-1.4h0a1 1 0 1 1 1.4 1.4zM17.8 6.2a1 1 0 0 1 1.4-1.4h0a1 1 0 1 1-1.4 1.4zM4.6 19.4a1 1 0 0 1 1.4 1.4h0a1 1 0 1 1-1.4-1.4zM12 8a4 4 0 1 1 0 8a4 4 0 0 1 0-8z" fill="currentColor"/></svg>';
-  const moonSVG = '<svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M21 12.8A9 9 0 0 1 11.2 3a7 7 0 1 0 9.8 9.8z" fill="currentColor"/></svg>';
-
-  function effectiveDimOn() {
-    const userOn = has("theme-dim");
-    const userOff = has("theme-dim-off");
-    const autoDim = html.classList.contains("auto-dim") && mql.matches;
-    return userOn || (!userOff && autoDim);
+  // Is dim active right now?
+  function isDimActive() {
+    const saved = savedPref();
+    if (saved === "on") return true;
+    if (saved === "off") return false;
+    // No override: auto-dim only if html has .auto-dim and OS prefers dark
+    return html.classList.contains("auto-dim") && osPrefersDark();
   }
 
-  function render() {
-    // Build button content fresh each time
-    const on = effectiveDimOn();
-    const label = on ? "Light" : "Dark"; // shows current mode name
-    const icon = on ? moonSVG : sunSVG;
-    btn.innerHTML = '<span class="dim-icon" aria-hidden="true">' + icon + '</span><span class="dim-label">' + label + '</span>';
-    setPressed(on);
+  function applyState() {
+    const on = isDimActive();
+    // Normalize classes
+    html.classList.toggle("theme-dim", on);
+    html.classList.toggle("theme-dim-off", !on && savedPref() === "off");
+    renderButton(on);
   }
 
-  function toggle() {
-    // Wake button from idle when interacted
-    wake();
+  // Initial render
+  applyState();
 
-    const on = effectiveDimOn();
-    if (on) {
-      // turn off (user override OFF)
+  // Toggle handler
+  btn.addEventListener("click", function () {
+    const currentlyOn = isDimActive();
+    if (currentlyOn) {
+      localStorage.setItem(KEY, "off");
       html.classList.remove("theme-dim");
       html.classList.add("theme-dim-off");
-      localStorage.setItem(KEY, "off");
     } else {
-      // turn on (user override ON)
+      localStorage.setItem(KEY, "on");
       html.classList.add("theme-dim");
       html.classList.remove("theme-dim-off");
-      localStorage.setItem(KEY, "on");
     }
-    render();
+    renderButton(!currentlyOn);
+  });
+
+  // Listen for OS theme changes only when there is no saved override
+  if (mql && mql.addEventListener) {
+    mql.addEventListener("change", function () {
+      if (savedPref() == null) applyState();
+    });
+  } else if (mql && mql.addListener) {
+    mql.addListener(function () {
+      if (savedPref() == null) applyState();
+    });
   }
 
-  // Idle fade logic
+  // Idle fade support (optional; harmless if CSS not present)
   let idleTimer;
-  function armIdle() {
+  const IDLE_MS = 3000;
+  function wake() {
+    btn.classList.remove("is-idle");
     clearTimeout(idleTimer);
     idleTimer = setTimeout(() => btn.classList.add("is-idle"), IDLE_MS);
   }
-  function wake() {
-    btn.classList.remove("is-idle");
-    armIdle();
-  }
-
-  // Events
-  btn.addEventListener("click", toggle);
-  btn.addEventListener("mouseenter", wake);
-  btn.addEventListener("focusin", wake);
-  btn.addEventListener("mouseleave", armIdle);
-  btn.addEventListener("blur", armIdle);
-
-  // Global “activity” wakes the button if the pointer is near it
-  window.addEventListener("mousemove", function (e) {
-    // If pointer is near bottom-left 160x100 zone, wake so it is readable
-    if (e.clientX < 160 && (window.innerHeight - e.clientY) < 120) wake();
-  }, { passive: true });
-  window.addEventListener("touchstart", wake, { passive: true });
-
-  // React to OS theme changes (if not overridden by user)
-  mql.addEventListener("change", () => {
-    render();
+  ["mousemove","keydown","touchstart","pointerdown","focus"].forEach(evt => {
+    window.addEventListener(evt, wake, { passive: true });
   });
-
-  // Initial render & idle timer
-  render();
-  armIdle();
+  wake();
 })();

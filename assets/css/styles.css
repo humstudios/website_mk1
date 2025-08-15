@@ -60,10 +60,11 @@
 /* === Base === */
 html {
   background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+
+  height: 100%;
     margin: 0;
     padding: 0;
     }
@@ -98,7 +99,7 @@ img, svg, video { max-width: 100%; height: auto; }
   overflow: hidden;
   
   opacity: 0.5;
-    position: absolute;
+    position: fixed;
   inset: 0;
   z-index: 0;
   z-index: 1;
@@ -272,11 +273,6 @@ h1.hero-headline {
   font-weight: 700 !important;
   color: #ffffff;
   text-shadow: 3px 3px 5px var(--text-glow);
-}
-
-/* Stronger shadow in light mode for better visibility */
-html[data-theme="light"] h1.hero-headline {
-  text-shadow: 3px 3px 5px rgba(16, 44, 79, 0.8);
 }
 
 /* Hero headline — fluid + container-aware */
@@ -687,9 +683,6 @@ html[data-theme="light"] {
   --gradient-mid:   #4891c3;
   --gradient-end:   #2d69a3;
 
-  /* alias: keep older var name pointing to the canonical one */
-  --gradient-middle: var(--gradient-mid);
-
   --text-strong:    #0b1220;
   --card-bg:        #f5f7fb;
   --card-border:    #e5ecf6;
@@ -780,7 +773,8 @@ html[data-theme="dark"] footer {
 
 
 @media (pointer: fine) and (min-width: 769px) {
-  .clouds { position: fixed;   z-index: 1;
+  .clouds { position: fixed;   z-index: 0;
+  inset: 0;
 }
 }
 
@@ -825,9 +819,9 @@ html[data-theme="dark"] .theme-toggle__thumb { transform: translate(var(--ms-rig
   transform: translate(-50%, -50%);
   display: block;
   margin: 0;
-  width: 16px;   /* match the visual size from reference */
+  width: 16px;
   height: 16px;
-  fill: none;              /* outlined icons */
+  fill: none;
   stroke: currentColor;
   stroke-width: 2;
   stroke-linecap: round;
@@ -862,14 +856,14 @@ html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
 
 .theme-toggle {
   --ms-width: 56px;
-  --ms-height: 26px;
+  --ms-height: 28px;
   --ms-pad: 2px;
   --ms-thumb: 20px;
-  --ms-track-bg-light: rgba(255,255,255,.55);
+  --ms-track-bg-light: rgba(255,255,255,.85);
   --ms-track-bg-dark: rgba(0,0,0,.35);
   --ms-border: currentColor;
-  --ms-left: calc(var(--ms-pad) + 0px);
-  --ms-right: calc(var(--ms-width) - var(--ms-thumb) - var(--ms-pad) - 4px);
+  --ms-left: calc(var(--ms-pad) + 2px);
+  --ms-right: calc(var(--ms-width) - var(--ms-thumb) - var(--ms-pad) - 2px);
 
   position: absolute;
   top: var(--header-pad-top, 0.75rem);
@@ -921,9 +915,9 @@ html[data-theme="dark"] .theme-toggle__thumb { transform: translate(var(--ms-rig
   transform: translate(-50%, -50%);
   display: block;
   margin: 0;
-  width: 16px;   /* match the visual size from reference */
+  width: 16px;
   height: 16px;
-  fill: none;              /* outlined icons */
+  fill: none;
   stroke: currentColor;
   stroke-width: 2;
   stroke-linecap: round;
@@ -955,7 +949,7 @@ html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
 
 
 @media (pointer: fine) and (min-width: 769px) {
-  .clouds { position: fixed; inset: 0;    z-index: 1;
+  .clouds { position: fixed; inset: 0;    z-index: 0;
 }
 }
 
@@ -967,10 +961,7 @@ html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(to bottom,
-              var(--gradient-start),
-              var(--gradient-mid),
-              var(--gradient-end));
+  background: transparent !important;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -980,3 +971,6 @@ html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
   .page-bg { position: fixed; }
 }
 
+
+/* iOS fallback: avoid fixed background glitches */
+@supports (-webkit-overflow-scrolling: touch) { html { background-attachment: scroll; } }

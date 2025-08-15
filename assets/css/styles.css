@@ -58,7 +58,7 @@ html {
   height: 100%;
     margin: 0;
     padding: 0;
-    background-color: to bottom;
+    background-color: var(--gradient-start);
 }
 body {
   height: 100%;
@@ -565,22 +565,7 @@ section + section { margin-top: var(--stack-gap); }
 @media (max-width: 360px) { :root { --hero-gap-top: var(--space-8);
   --hero-gap-bottom: var(--space-5); } }
 
-:root { --dim-level-manual: 0.18; --dim-level-auto: 0.18; --dim-strength: 0; }
-
-html.theme-dim { --dim-strength: var(--dim-level-manual); }
-
 /* Dim overlay */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgb(0 0 0 / var(--dim-strength));
-  pointer-events: none;
-  z-index: 2147483600 !important;
-  transition: background 180ms ease;
-}
-html.theme-dim-off body::before { content: none; }
-
 /* Dark/Light toggle — fixed bottom-left, above everything */
 @media (prefers-reduced-motion: reduce) { }
 
@@ -605,7 +590,7 @@ html.theme-dim-off body::before { content: none; }
 
   body {
     background-image: linear-gradient(to bottom, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
-  background-attachment: fixed;
+  
   background-size: cover;
   background-repeat: no-repeat;
   }
@@ -689,183 +674,9 @@ html[data-theme="light"] {
 }
 /* ======================================================================== */
 
-/* ========================================================================
-   Hum Studios — Theme Switch (segmented control + auto-hide)
-   Date: 2025-08-13
-   Notes:
-   - Works with JS at /assets/js/theme-switch.js
-   - Replaces legacy #theme-toggle if present; otherwise floats bottom-right.
-   - Uses custom properties scoped for the control (prefixed --ts-*).
-   ======================================================================== */
+/* Theme switch (segmented) removed */
 
-:root {
-  --ts-bg: #ffffff;
-  --ts-fg: #0b1220;
-  --ts-muted: #6b7280;
-  --ts-border: #e5e7eb;
-  --ts-accent: #0f172a;
-  --ts-focus: #2563eb;
-  --ts-radius: 999px;
-  --ts-shadow: 0 8px 20px rgba(0,0,0,.08);
-}
-
-/* Dark tokens hook */
-html[data-theme="dark"] {
-  --ts-bg: #0b1220;
-  --ts-fg: #e5e7eb;
-  --ts-muted: #9ca3af;
-  --ts-border: #1f2937;
-  --ts-accent: #e5e7eb;
-  --ts-focus: #93c5fd;
-}
-
-/* Container: fixed, bottom-right by default (only if no mount point provided) */
-.theme-switch { transition: opacity .6s ease; opacity: .85; }
-
-/* Auto-hide states */
-.theme-switch.is-hidden {
-  opacity: .55;
-  
-}
-@media (prefers-reduced-motion: reduce) {
-  .theme-switch { transition: none; }
-}
-
-/* Segmented control */
-.theme-switch__group {
-  display: inline-grid;
-  grid-auto-flow: column;
-  gap: .25rem;
-}
-
-.theme-switch__btn {
-  font-size: 0.85rem;
-  appearance: none;
-  background: transparent;
-  color: var(--ts-muted);
-  border: 1px solid transparent;
-  border-radius: var(--ts-radius);
-  padding: 0.25rem 0.5rem;
-  font: inherit;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: .35rem;
-  cursor: pointer;
-}
-
-.theme-switch__btn svg {
-  width: 16px;
-  height: 16px;
-  display: block;
-}
-
-.theme-switch__btn[aria-checked="true"] {
-  background: var(--ts-accent);
-  color: #ffffff;
-}
-
-html[data-theme="dark"] .top-nav a {
-  color: var(--nav-link);
-  text-shadow: 0 1px 1px rgba(0,0,0,0.1);
-}
-
-.theme-switch__btn:focus-visible {
-  outline: 3px solid var(--ts-focus);
-  outline-offset: 2px;
-}
-
-.theme-switch__label {
-  font-weight: 600;
-}
-
-/* Optional caption */
-.theme-switch__caption {
-  margin-left: .5rem;
-  color: var(--ts-muted);
-  font-size: .875rem;
-}
-
-/* Inline mount (header replacement for #theme-toggle) */
-.theme-switch[data-inline="true"] {
-  position: static;
-  box-shadow: none;
-  border-radius: 999px;
-  padding: .25rem;
-  background: transparent;
-  border: none;
-}
-
-/* High-contrast mode */
-@media (forced-colors: active) {
-  .theme-switch,
-  .theme-switch__btn[aria-checked="true"] {
-    border: 1px solid CanvasText;
-  }
-}
-
-/* If both legacy and new exist momentarily, prefer the new control */
-:root {
-  --ts-glass-bg: rgba(255,255,255,.75);
-  --ts-glass-border: rgba(0,0,0,.08);
-}
-
-html[data-theme="dark"] {
-  --ts-glass-bg: rgba(11,18,32,.55);
-  --ts-glass-border: rgba(255,255,255,.10);
-}
-
-/* Force floating position & frosted look */
-.theme-switch {
-  position: fixed !important;
-  left: 1rem;
-  right: auto;
-  bottom: 1rem;
-  z-index: 2147483647;
-  background: var(--ts-glass-bg) !important;
-  border: 1px solid var(--ts-glass-border) !important;
-  border-radius: 16px !important;
-  box-shadow: 0 10px 30px rgba(0,0,0,.12) !important;
-  -webkit-backdrop-filter: saturate(180%) blur(12px);
-  backdrop-filter: saturate(180%) blur(12px);
-  padding: .25rem !important;
-}
-
-/* Ensure inline mounting doesn't switch to static layout */
-.theme-switch[data-inline="true"] {
-  position: fixed !important;
-  left: 1rem !important;
-  bottom: 1rem !important;
-  right: auto !important;
-  background: var(--ts-glass-bg) !important;
-  border: 1px solid var(--ts-glass-border) !important;
-  box-shadow: 0 10px 30px rgba(0,0,0,.12) !important;
-}
-
-/* Button aesthetics inside the frosted card */
-.theme-switch__btn {
-  color: var(--ts-fg);
-  background: transparent;
-  border-color: transparent;
-}
-.theme-switch__btn[aria-checked="true"] {
-  background: var(--ts-accent) !important;
-  color: #fff !important;
-}
-html[data-theme="dark"] .theme-switch__btn[aria-checked="true"] {
-  color: #0b1220 !important;
-}
-
-/* Keep caption subtle over glass */
-.theme-switch__caption {
-  color: var(--ts-muted);
-}
-
-/* Final assertive bottom-left placement for the theme switch */
-.theme-switch{ left:1rem !important; right:auto !important; bottom:1rem !important; }
-
-/* ========================================================================
-   Dark Theme – Light Cards variant (slate palette)
+/* Dark Theme – Light Cards variant (slate palette)
    Date: 2025-08-13
    Usage:
      • Per card: add class="card card--light"
@@ -936,12 +747,158 @@ html[data-theme="dark"] .top-nav a[aria-current="page"] {
 }
 
 /* Dark & Darker modes: footer matches middle gradient color */
-html[data-theme="dark"] footer,
-html[data-theme="darker"] footer {
+html[data-theme="dark"] footer {
   background-color: var(--gradient-mid) !important;
 }
 
 
 @media (pointer: fine) and (min-width: 769px) {
   .clouds { position: fixed; }
+}
+
+
+/* ========================================================================
+   Theme Toggle Slider (Light <-> Dark) — 2025-08-15
+   ======================================================================== */
+.theme-switch{display:none!important;} /* hide the old control if present */
+
+html[data-theme="dark"] html[data-theme="dark"] html[data-theme="dark"] .theme-toggle__slider {
+  position: relative;
+  width: var(--ms-width);
+  height: var(--ms-height);
+  border-radius: 999px;
+  border: 2px solid var(--ms-border);
+  background: var(--ms-track-bg-light);
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+html[data-theme="dark"] .theme-toggle__slider { background: var(--ms-track-bg-dark); }
+
+.theme-toggle__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--ms-thumb);
+  height: var(--ms-thumb);
+  border-radius: 999px;
+  border: 2px solid var(--ms-border);
+  background: transparent;
+  transform: translate(var(--ms-left), -50%);
+  display: grid;
+  place-items: center;
+  transition: transform .25s ease;
+}
+/* Thumb position reflects current theme */
+html[data-theme="dark"] .theme-toggle__thumb { transform: translate(var(--ms-right), -50%); }
+
+.theme-toggle__thumb svg {
+  width: 16px; height: 16px;
+  fill: currentColor; stroke: currentColor;
+  transition: opacity .2s ease;
+}
+
+.theme-toggle__thumb .icon-sun { opacity: 1; }
+.theme-toggle__thumb .icon-moon { opacity: 0; }
+html[data-theme="dark"] .theme-toggle__thumb .icon-sun { opacity: 0; }
+html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
+
+.theme-toggle:focus-visible .theme-toggle__slider {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+
+/* Header placement for theme slider */
+.top-header { position: relative; }
+
+.top-header html[data-theme="dark"] /* Keep it from overlapping the hamburger by nudging on very small screens */
+@media (max-width: 420px) {
+  .top-header html[data-theme="dark"] }
+
+/* Optional: align the right edge with the nav/hamburger if header uses a container */
+.header .container .theme-toggle,
+.top-header .container html[data-theme="dark"] 
+
+/* === Theme Toggle Slider (header, top-right) ============================= */
+.theme-switch{display:none!important;} /* hide any legacy segmented switch */
+
+.theme-toggle {
+  --ms-width: 56px;
+  --ms-height: 28px;
+  --ms-pad: 2px;
+  --ms-thumb: 24px;
+  --ms-track-bg-light: rgba(255,255,255,.85);
+  --ms-track-bg-dark: rgba(0,0,0,.35);
+  --ms-border: currentColor;
+  --ms-left: var(--ms-pad);
+  --ms-right: calc(var(--ms-width) - var(--ms-thumb) - var(--ms-pad));
+
+  position: absolute;
+  top: var(--header-pad-top, 0.75rem);
+  right: max(env(safe-area-inset-right), var(--header-pad-x, 1rem));
+  z-index: 2147483647;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: #0b1220;
+}
+html[data-theme="dark"] .theme-toggle { color: #ffffff; }
+
+.theme-toggle__slider {
+  position: relative;
+  width: var(--ms-width);
+  height: var(--ms-height);
+  border-radius: 999px;
+  border: 2px solid var(--ms-border);
+  background: var(--ms-track-bg-light);
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+html[data-theme="dark"] .theme-toggle__slider { background: var(--ms-track-bg-dark); }
+
+.theme-toggle__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--ms-thumb);
+  height: var(--ms-thumb);
+  border-radius: 999px;
+  border: 2px solid var(--ms-border);
+  background: transparent;
+  transform: translate(var(--ms-left), -50%);
+  display: grid;
+  place-items: center;
+  transition: transform .25s ease;
+}
+/* Thumb position reflects current theme */
+html[data-theme="dark"] .theme-toggle__thumb { transform: translate(var(--ms-right), -50%); }
+
+.theme-toggle__thumb svg {
+  width: 16px; height: 16px;
+  fill: currentColor; stroke: currentColor;
+  transition: opacity .2s ease;
+}
+.theme-toggle__thumb .icon-sun { opacity: 1; }
+.theme-toggle__thumb .icon-moon { opacity: 0; }
+html[data-theme="dark"] .theme-toggle__thumb .icon-sun { opacity: 0; }
+html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
+
+/* Keyboard focus */
+.theme-toggle:focus-visible .theme-toggle__slider {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Header placement for theme slider */
+.top-header { position: relative; }
+.top-header .theme-toggle {
+  position: absolute;
+  top: var(--header-pad-top, 0.75rem);
+  right: max(env(safe-area-inset-right), var(--header-pad-x, 1rem));
+  z-index: 50;
+}
+@media (max-width: 420px) {
+  .top-header .theme-toggle { right: max(env(safe-area-inset-right), 0.5rem); }
 }

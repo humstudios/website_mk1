@@ -56,8 +56,9 @@
 /* === Base === */
 html {
   height: 100%;
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
+    background-color: to bottom;
 }
 body {
   height: 100%;
@@ -66,14 +67,14 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
-
   font-family: 'Overpass', sans-serif;
   font-weight: 400;
   background-image: linear-gradient(to bottom, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
-  background-attachment: fixed;
+  background-attachment: scroll;
   background-size: cover;
   background-repeat: no-repeat;
   color: var(--text-strong);
+  min-height: 100%;
 }
 
 * { box-sizing: border-box; }
@@ -81,7 +82,6 @@ img, svg, video { max-width: 100%; height: auto; }
 
 /* === Clouds (layout positions) === */
 .clouds {
-  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
@@ -90,6 +90,7 @@ img, svg, video { max-width: 100%; height: auto; }
   overflow: hidden;
   z-index: -1;
   opacity: 0.5;
+    position: absolute;
 }
 
 .cloud {
@@ -180,7 +181,7 @@ html[data-theme="light"] .top-nav a:focus-visible {
   gap: 5px;
   padding: 0.4em;
   background: #235b98;
-  border-radius: 4px;
+  border-radius: 6px;
   position: relative; z-index: 11;
 }
 .hamburger, #hamburgerBtn { background-color: rgba(0, 64, 128, 0.8); }
@@ -561,7 +562,7 @@ section + section { margin-top: var(--stack-gap); }
   --hero-gap-bottom: var(--space-5); } }
 @media (max-width: 420px) { :root { --hero-gap-top: var(--space-6);
   --hero-gap-bottom: var(--space-5); } }
-@media (max-width: 360px) { :root { --hero-gap-top: var(--space-12);
+@media (max-width: 360px) { :root { --hero-gap-top: var(--space-8);
   --hero-gap-bottom: var(--space-5); } }
 
 :root { --dim-level-manual: 0.18; --dim-level-auto: 0.18; --dim-strength: 0; }
@@ -590,9 +591,9 @@ html.theme-dim-off body::before { content: none; }
 /* Auto (device setting) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --gradient-start: #0e1424;
-    --gradient-mid: #0f1b2f;
-    --gradient-end: #0b1220;
+    --gradient-start: #191550;
+    --gradient-mid: #2e2761;
+    --gradient-end: #2B245A;
 
     --text-strong: #e6edf7;
     --card-bg: #111a2b;
@@ -619,14 +620,20 @@ html.theme-dim-off body::before { content: none; }
     color: var(--nav-link);
     text-shadow: 0 1px 1px rgba(0,0,0,0.1);
   }
+
+
+  /* Override hero headline shadow in dark mode */
+  h1.hero-headline {
+    text-shadow: 2px 2px 4px #5548A8;
+  }
 }
 
 /* Manual override (JS toggle): add data-theme="dark" to <html> */
 html[data-theme="dark"] {
   /* same variables as auto dark */
-  --gradient-start: #0e1424;
-  --gradient-mid: #121a2e;
-  --gradient-end: #0b1220;
+  --gradient-start: #191550;
+  --gradient-mid: #2e2761;
+  --gradient-end: #2B245A;
 
   --text-strong: #e6edf7;
   --card-bg: #111a2b;
@@ -640,10 +647,11 @@ html[data-theme="dark"] {
 
 html[data-theme="dark"] body {
   background-image: linear-gradient(to bottom, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
-  background-attachment: fixed;
+  background-attachment: scroll;
   background-size: cover;
   background-repeat: no-repeat;
-  }
+  min-height: 100%;
+}
 
 html[data-theme="dark"] .card {
   background: var(--card-bg);
@@ -931,4 +939,9 @@ html[data-theme="dark"] .top-nav a[aria-current="page"] {
 html[data-theme="dark"] footer,
 html[data-theme="darker"] footer {
   background-color: var(--gradient-mid) !important;
+}
+
+
+@media (pointer: fine) and (min-width: 769px) {
+  .clouds { position: fixed; }
 }

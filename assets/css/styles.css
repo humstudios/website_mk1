@@ -48,7 +48,11 @@
    Notes:
    - Two requested edits applied:
      • .hero-headline { margin: 0 auto var(--space-5); }
-     • .top-header { margin-bottom: var(--hero-gap-top); align-items: flex-end; }
+     • .top-header {margin-bottom: var(--hero-gap-top); align-items: flex-end;
+  position: relative;
+  z-index: 2;
+
+}
    - Footer columns are bottom-aligned across breakpoints.
    - Canonical spacing token --stack-gap is at the very bottom.
    ===================================================== */
@@ -61,20 +65,21 @@ html {
     background-color: var(--gradient-start);
 }
 body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  font-family: 'Overpass', sans-serif;
-  font-weight: 400;
-  background-image: linear-gradient(to bottom, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
-  background-attachment: scroll;
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: var(--text-strong);
-  min-height: 100%;
+  position: relative;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    font-family: 'Overpass', sans-serif;
+    font-weight: 400;
+    background-attachment: scroll;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: var(--text-strong);
+    min-height: 100%;
+    background: transparent;
 }
 
 * { box-sizing: border-box; }
@@ -85,12 +90,17 @@ img, svg, video { max-width: 100%; height: auto; }
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100%;
+  
   pointer-events: none;
   overflow: hidden;
-  z-index: -1;
+  
   opacity: 0.5;
     position: absolute;
+  inset: 0;
+  z-index: 0;
+  z-index: 1;
+  pointer-events: none;
+
 }
 
 .cloud {
@@ -124,6 +134,7 @@ img, svg, video { max-width: 100%; height: auto; }
   padding: var(--space-8) var(--space-4) var(--space-12);
   width: min(1100px, 92%);
   margin-inline: auto;
+
 }
 
 .top-header {
@@ -258,6 +269,11 @@ h1.hero-headline {
   font-weight: 700 !important;
   color: #ffffff;
   text-shadow: 3px 3px 5px var(--text-glow);
+}
+
+/* Stronger shadow in light mode for better visibility */
+html[data-theme="light"] h1.hero-headline {
+  text-shadow: 3px 3px 5px rgba(16, 44, 79, 0.8);
 }
 
 /* Hero headline — fluid + container-aware */
@@ -405,13 +421,15 @@ h1.hero-headline {
 }
 
 /* === Footer === */
-footer {
-  background-color: #4891c3;
+footer {background-color: #4891c3;
   text-align: center;
   padding: var(--space-4) var(--space-4) var(--space-2);
   font-size: 0.9rem;
   color: white;
   font-family: 'Overpass', sans-serif;
+  position: relative;
+  z-index: 2;
+
 }
 
 .footer-content {
@@ -480,7 +498,8 @@ body.contact-page .footer-address { display: block; }
     grid-column: 2;
     justify-self: center;
   }
-  body { background-attachment: scroll; }
+  body {
+  position: relative; background-attachment: scroll; }
 }
 
 /* === Utilities === */
@@ -589,7 +608,8 @@ section + section { margin-top: var(--stack-gap); }
   }
 
   body {
-    background-image: linear-gradient(to bottom, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+  position: relative;
+    
   
   background-size: cover;
   background-repeat: no-repeat;
@@ -631,7 +651,8 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="dark"] body {
-  background-image: linear-gradient(to bottom, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+  position: relative;
+  
   background-attachment: scroll;
   background-size: cover;
   background-repeat: no-repeat;
@@ -662,6 +683,9 @@ html[data-theme="light"] {
   --gradient-start: #235b98;
   --gradient-mid:   #4891c3;
   --gradient-end:   #2d69a3;
+
+  /* alias: keep older var name pointing to the canonical one */
+  --gradient-middle: var(--gradient-mid);
 
   --text-strong:    #0b1220;
   --card-bg:        #f5f7fb;
@@ -753,7 +777,8 @@ html[data-theme="dark"] footer {
 
 
 @media (pointer: fine) and (min-width: 769px) {
-  .clouds { position: fixed; }
+  .clouds { position: fixed;   z-index: 1;
+}
 }
 
 
@@ -791,9 +816,20 @@ html[data-theme="dark"] .theme-toggle__slider { background: var(--ms-track-bg-da
 html[data-theme="dark"] .theme-toggle__thumb { transform: translate(var(--ms-right), -50%); }
 
 .theme-toggle__thumb svg {
-  width: 16px; height: 16px;
-  fill: currentColor; stroke: currentColor;
-  transition: opacity .2s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  margin: 0;
+  width: 16px;   /* match the visual size from your reference */
+  height: 16px;
+  fill: none;              /* outlined icons */
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity .2s ease, transform .2s ease;
 }
 
 .theme-toggle__thumb .icon-sun { opacity: 1; }
@@ -823,14 +859,14 @@ html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
 
 .theme-toggle {
   --ms-width: 56px;
-  --ms-height: 28px;
+  --ms-height: 32px;
   --ms-pad: 2px;
-  --ms-thumb: 24px;
+  --ms-thumb: 26px;
   --ms-track-bg-light: rgba(255,255,255,.85);
   --ms-track-bg-dark: rgba(0,0,0,.35);
   --ms-border: currentColor;
-  --ms-left: var(--ms-pad);
-  --ms-right: calc(var(--ms-width) - var(--ms-thumb) - var(--ms-pad));
+  --ms-left: calc(var(--ms-pad) + 0px);
+  --ms-right: calc(var(--ms-width) - var(--ms-thumb) - var(--ms-pad) - 4px);
 
   position: absolute;
   top: var(--header-pad-top, 0.75rem);
@@ -876,9 +912,20 @@ html[data-theme="dark"] .theme-toggle__slider { background: var(--ms-track-bg-da
 html[data-theme="dark"] .theme-toggle__thumb { transform: translate(var(--ms-right), -50%); }
 
 .theme-toggle__thumb svg {
-  width: 16px; height: 16px;
-  fill: currentColor; stroke: currentColor;
-  transition: opacity .2s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  margin: 0;
+  width: 16px;   /* match the visual size from your reference */
+  height: 16px;
+  fill: none;              /* outlined icons */
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity .2s ease, transform .2s ease;
 }
 .theme-toggle__thumb .icon-sun { opacity: 1; }
 .theme-toggle__thumb .icon-moon { opacity: 0; }
@@ -902,3 +949,31 @@ html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
 @media (max-width: 420px) {
   .top-header .theme-toggle { right: max(env(safe-area-inset-right), 0.5rem); }
 }
+
+
+@media (pointer: fine) and (min-width: 769px) {
+  .clouds { position: fixed; inset: 0;    z-index: 1;
+}
+}
+
+
+
+/* === Full-page gradient layer =========================================== */
+.page-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+              var(--gradient-start),
+              var(--gradient-mid),
+              var(--gradient-end));
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Desktop: fixed for subtle parallax, safe on iOS due to coarse pointer rule elsewhere */
+@media (pointer: fine) and (min-width: 769px) {
+  .page-bg { position: fixed; }
+}
+

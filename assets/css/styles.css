@@ -59,11 +59,14 @@
 
 /* === Base === */
 html {
-  height: 100%;
+  background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+height: 100%;
     margin: 0;
     padding: 0;
-    background-color: var(--gradient-start);
-}
+    }
 body {
   position: relative;
     height: 100%;
@@ -822,7 +825,7 @@ html[data-theme="dark"] .theme-toggle__thumb { transform: translate(var(--ms-rig
   transform: translate(-50%, -50%);
   display: block;
   margin: 0;
-  width: 16px;   /* match the visual size from your reference */
+  width: 16px;   /* match the visual size from reference */
   height: 16px;
   fill: none;              /* outlined icons */
   stroke: currentColor;
@@ -859,10 +862,10 @@ html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
 
 .theme-toggle {
   --ms-width: 56px;
-  --ms-height: 32px;
+  --ms-height: 26px;
   --ms-pad: 2px;
-  --ms-thumb: 26px;
-  --ms-track-bg-light: rgba(255,255,255,.85);
+  --ms-thumb: 20px;
+  --ms-track-bg-light: rgba(255,255,255,.55);
   --ms-track-bg-dark: rgba(0,0,0,.35);
   --ms-border: currentColor;
   --ms-left: calc(var(--ms-pad) + 0px);
@@ -918,7 +921,7 @@ html[data-theme="dark"] .theme-toggle__thumb { transform: translate(var(--ms-rig
   transform: translate(-50%, -50%);
   display: block;
   margin: 0;
-  width: 16px;   /* match the visual size from your reference */
+  width: 16px;   /* match the visual size from reference */
   height: 16px;
   fill: none;              /* outlined icons */
   stroke: currentColor;

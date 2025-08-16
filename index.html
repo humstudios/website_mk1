@@ -71,22 +71,15 @@
 <main id="main" role="main">
 <div class="card card--hero-placeholder">
 <div class="hero-image">
-<video id="heroVideo"
-       class="hero-video"
-       poster="assets/img/animation/greeting-poster.jpg"
-       preload="metadata" autoplay
-       playsinline
-       muted
-       loop
-       aria-hidden="true">
-  <source data-src="assets/img/animation/greeting-1080.mp4" type="video/mp4">
-</video>
+<img src="assets/img/animation/chase_hero.jpg"
+         alt="Cartoon elephant, crocodile, and girl looking out apartment windows"
+         class="hero-video">
 </div>
 </div>
 
 <section class="card">
 <h1>
-      Interactive stories for kids
+      Interactive stories<wbr> for kids
      </h1>
 <p>
       Hum Studios creates fun, interactive picture books for preschoolers that combine reading skills and entertainment in a fresh and amusing way.
@@ -94,6 +87,10 @@
 <p>
       An environmentally friendly alternative to traditional paper picture books, our digital books are designed for tablets and phones – and are completely ad and subscription-free.
      </p>
+
+<p class="u-center-text" style="margin-top: var(--space-4)">
+  <a href="about.html" class="btn-link"><strong>Learn more about Hum →</strong></a>
+</p>
 </section>
 <section class="card">
 <h2>
@@ -121,7 +118,7 @@
 </section>
 <section class="card">
 <h2>
-      How our digital books work
+      How our digital<wbr> books work
      </h2>
 <p>
       “No Pets Allowed!” is the first in Hum Studios’ interactive book series. Our books work just like traditional ones, with the pages turning when you swipe
@@ -142,7 +139,7 @@
 </video>
 
 </div>
-<h2>It's a game as well as a book
+<h2>It's a game as<wbr> well as a book
      </h2>
 <p>
       Find the butterflies! Hidden within the story are five butterflies. As your child reads the adventure, they’re invited to find all of them! The great thing about the book being digital is every time your child reads it, the butterflies are hidden in different places.
@@ -161,18 +158,7 @@
 </section>
 <section class="card">
 <h2>
-      About Hum
-     </h2>
-<p>
-      Hum Studios is a team of writers who’ve worked at Disney and Universal Studios who joined forces with a group of BAFTA award-winning animators. Together, we wanted to tell cartoon stories that merged the fun and humor of traditional cartoons with the interactive potential of modern technology.
-     </p>
-<p>
-      With our kids loving pet stories and animal stories, we created an engaging interactive digital book that combines the educational value of the best preschool apps with the sheer fun of stories about pets.
-     </p>
-</section>
-<section class="card">
-<h2>
-      Coming Soon!<wbr> The Bad Witch’s Birthday
+      Coming Soon! The<wbr> Bad Witch’s Birthday
      </h2>
 <p>
       Next in our series of Jessie Adventures is ‘The Bad Witch’s Birthday’. When Jessie meets a wicked old witch who’s particularly miserable because no one remembered her birthday, Jessie tries to give her a fun day and teach her the meaning of kindness. And, oh dear, what a mess that turns out to be!
@@ -186,14 +172,13 @@
 <script>
 (function(){
   // Respect prefers-reduced-motion: show poster only
-  var reduceMotion = false; // TEMP: force loading while testing
+  var reduceMotion = false;
 
   function lazyLoadVideo(id) {
     var v = document.getElementById(id);
     if (!v) return;
 
     if (reduceMotion) {
-      // Don't load sources; keep poster
       return;
     }
 
@@ -209,7 +194,6 @@
       loaded = true;
     };
 
-    // IntersectionObserver for near-viewport loading
     var io = new IntersectionObserver(function(entries, observer){
       entries.forEach(function(entry){
         if (entry.isIntersecting) {
@@ -222,11 +206,9 @@
     io.observe(v);
   }
 
-  // Init both videos if present
-  lazyLoadVideo('heroVideo');
+  // Only load the "How our digital books work" video
   lazyLoadVideo('howToVideo');
 })();
 </script>
-
 </body>
 </html>

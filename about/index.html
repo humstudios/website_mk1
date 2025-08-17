@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" class="cards-light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)"  content="#0b1220">
+  <title>About — Hum Studios</title>
+
+  <!-- Styles (relative to this nested page) -->
+  <link rel="stylesheet" href="../assets/css/styles.css?v=10">
+  <link rel="stylesheet" href="../assets/css/theme-switch.css">
+  <link rel="stylesheet" href="../assets/css/theme-switch.bottom-left.css">
+
+  <!-- Path-agnostic loader (relative include to the script itself) -->
+  <script src="../assets/js/includes.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Shared header via client-side include -->
+  <div data-include="partials/header.html"></div>
+
+  <main id="main" class="container" style="min-height: 60vh;">
+    <section class="section">
+      <h1>About Hum Studios</h1>
+      <p>We make interactive stories for kids and the grown-ups who read with them.</p>
+      <p>This page lives in <code>/about/</code> to demonstrate that includes work in nested folders.</p>
+    </section>
+  </main>
+
+  <!-- Shared footer via client-side include -->
+  <div data-include="partials/footer.html"></div>
+</body>
+</html>

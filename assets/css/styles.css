@@ -159,12 +159,11 @@ img, svg, video { max-width: 100%; height: auto; }
 }
 .logo:hover { transform: scale(1.2); }
 
-/* === Fix: Ensure inline SVG header logos are visible on gradient header (layout-safe) === */
-.top-header .logo { line-height: 0; } /* remove inline gap without changing sizing */
+/* === Header SVG visibility (safe, no layout change) === */
+.top-header .logo { line-height: 0; }
 .top-header .logo svg {
   display: block;
   height: auto;
-  /* Many exported SVGs depend on currentColor; set a visible color on header */
   color: #FFFCF5;
   fill: currentColor;
   stroke: currentColor;
@@ -881,10 +880,9 @@ html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
 /* Optional: align the right edge with the nav/hamburger if header uses a container */
 /* Removed stray selector to prevent CSS parse issues:
 .header .container .theme-toggle,
-.top-header .container html[data-theme="dark"] 
+.top-header .container html[data-theme="dark"]
+*/ 
 
-
-*/
 /* === Theme Toggle Slider (header, top-right) ============================= */
 .theme-switch{display:none!important;} /* hide any legacy segmented switch */
 

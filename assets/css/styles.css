@@ -1024,3 +1024,115 @@ html[data-theme="light"] .theme-toggle__icon {
 .card h2 {
   margin-bottom: var(--space-4);
 }
+
+
+/* =======================================================================
+   Theme Toggle — v2 Fixes (2025-08-17)
+   - Restore header alignment so nav doesn't shift left
+   - Reserve right-side space for the toggle
+   - Nudge toggle higher; stable on iPhone
+   - Keep light-mode contrast
+   ======================================================================= */
+
+/* Header stays as designed */
+.top-header {
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  position: relative !important;
+  padding-right: 3.25rem; /* reserve space for the toggle so nav doesn't move */
+}
+
+/* Place toggle inside header without affecting layout */
+.top-header .theme-toggle {
+  position: absolute !important;
+  top: 0.25rem !important; /* sit higher in the header */
+  right: calc(env(safe-area-inset-right, 0px) + 0.75rem) !important;
+  margin-left: 0 !important;
+  z-index: 2147483647 !important;
+}
+
+/* Slightly larger target on touch */
+@media (pointer: coarse) {
+  .theme-toggle {
+    --ms-width: 48px;
+    --ms-height: 28px;
+    --ms-thumb: 26px;
+  }
+}
+
+/* Light mode contrast so it's visible on iPhone */
+html[data-theme="light"] .theme-toggle {
+  color: #0b1220 !important;
+}
+html[data-theme="light"] .theme-toggle__slider {
+  border-color: #0b1220 !important;
+  background: rgba(255,255,255,0.9) !important;
+}
+html[data-theme="light"] .theme-toggle__thumb {
+  border-color: #0b1220 !important;
+  background: #ffffff !important;
+}
+
+/* Keep it clear of the hamburger on tiny phones */
+@media (max-width: 420px) {
+  .top-header { padding-right: 3rem; }
+  .hamburger { margin-right: 0.5rem; }
+}
+
+
+/* =======================================================================
+   Header/Hero Alignment — v3 (2025-08-17)
+   Goal: Right-align main menu (.top-nav) with hero image/card clamp.
+   Also: Keep iOS toggle visible, but do NOT shift the nav left.
+   ======================================================================= */
+
+/* Ensure the header uses the same clamp as hero (already true in base),
+   and remove the right padding that reserved space for the toggle. */
+.top-header {
+  padding-right: 0 !important;
+  max-width: var(--content-max) !important;
+  width: 100% !important;
+  margin-inline: auto !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  position: relative !important;
+}
+
+/* Push the nav to the far right of the clamp so its right edge
+   lines up with the hero image/card edge. */
+.top-header .top-nav {
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+}
+
+/* Keep the toggle absolutely positioned so it does not consume layout space.
+   Place it high enough to avoid overlapping the nav baseline. */
+.top-header .theme-toggle {
+  position: absolute !important;
+  top: -0.1rem !important;
+  right: calc(env(safe-area-inset-right, 0px) + 0.75rem) !important;
+  z-index: 2147483647 !important;
+  margin: 0 !important;
+}
+
+/* Tiny phones: if overlap ever occurs, allow a smidge of right padding
+   without noticeably breaking the alignment. */
+@media (max-width: 420px) {
+  .top-header {
+    padding-right: 0.5rem !important;
+  }
+}
+
+/* Light-mode contrast for visibility (from v2, reiterated) */
+html[data-theme="light"] .theme-toggle {
+  color: #0b1220 !important;
+}
+html[data-theme="light"] .theme-toggle__slider {
+  border-color: #0b1220 !important;
+  background: rgba(255,255,255,0.9) !important;
+}
+html[data-theme="light"] .theme-toggle__thumb {
+  border-color: #0b1220 !important;
+  background: #ffffff !important;
+}

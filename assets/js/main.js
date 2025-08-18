@@ -1,3 +1,19 @@
+// Scroll restore: keep header in view on hard reloads (F5 / Cmd+R)
+(function () {
+  try {
+    var nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || null;
+    var isReload = nav ? (nav.type === 'reload')
+                       : (performance.navigation && performance.navigation.type === 1);
+    if (isReload && 'scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+      // Ensure top after layout/styles settle on normal reloads
+      window.addEventListener('load', function () { window.scrollTo(0, 0); }, { once: true });
+      // Also handle bfcache restores just in case
+      window.addEventListener('pageshow', function (e) { if (e.persisted) window.scrollTo(0, 0); }, { once: true });
+    }
+  } catch (e) { /* no-op */ }
+}());
+
 (function () {
   var btn = document.getElementById('hamburgerBtn');
   var menu = document.getElementById('mobileMenu');
@@ -66,7 +82,7 @@
   btn.setAttribute('aria-expanded', 'false');
   menu.setAttribute('aria-hidden', 'true');
   setOpen(false);
-})();
+}());
 
 // Mark init complete for safety-net detection
 window.__humMenuInit = true;

@@ -61,6 +61,7 @@
 
 /* === Base === */
 html {
+  font-size: var(--font-size-base);
   background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
   background-repeat: no-repeat;
   background-size: cover;
@@ -342,7 +343,9 @@ html[data-theme="light"] h1.hero-headline {
 
   --text-glow: #4a90e2;
 
-  --radius-card: 48px; } /* site width clamp */
+  --radius-card: 48px;
+  --font-size-base: clamp(16px, 1.15vw + 0.2rem, 21.3333px);
+} /* site width clamp */
 
 .top-header,
 .hero-area,
@@ -718,7 +721,9 @@ html[data-theme="dark"].cards-light .card .muted {
   color: var(--muted);
 }
 
-
+@media (min-width: 1280px) {
+  footer { }
+}
 
 /* === Footer socials: always side-by-side === */
 .footer-social, .footer-social ul {

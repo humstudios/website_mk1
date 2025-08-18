@@ -37,7 +37,10 @@
    - --radius-card: line 293
 
    Footer logo clamp:
-   - no functional CSS here.)
+   - --footer-logo-min: line 295
+   - --footer-logo-max: line 259
+
+   (This is an index only; no functional CSS here.)
    ===================================================================== */
 /* =====================================================
    Hum Studios — styles.cleaned.v3.5.css  (2025-08-11)
@@ -310,7 +313,11 @@ html[data-theme="light"] h1.hero-headline {
   color-scheme: light dark;
  --content-max: 960px; 
   --hero-gap-top: var(--space-12);
-  --hero-gap-bottom: var(--space-5); --space-1: 0.25rem;
+  --hero-gap-bottom: var(--space-5);
+
+  --footer-logo-max: 160px;
+
+  --space-1: 0.25rem;
 
   --space-2: 0.5rem;
 
@@ -342,7 +349,10 @@ html[data-theme="light"] h1.hero-headline {
 
   --text-glow: #4a90e2;
 
-  --radius-card: 48px; } /* site width clamp */
+  --radius-card: 48px;
+
+  --footer-logo-min: 110px;
+} /* site width clamp */
 
 .top-header,
 .hero-area,
@@ -442,7 +452,7 @@ footer {background-color: #4891c3;
 }
 
 .footer-logo { justify-self: start; text-align: left;  align-self: end;}
-.footer-logo img { width: clamp(120px, 12vw, 180px); max-width: 100%; height: auto;  display: block;}
+.footer-logo img { width: clamp(var(--footer-logo-min), 12vw, var(--footer-logo-max)); max-width: 100%; height: auto;  display: block;}
 
 .footer-social {
   display: flex;
@@ -718,7 +728,9 @@ html[data-theme="dark"].cards-light .card .muted {
   color: var(--muted);
 }
 
-
+@media (min-width: 1280px) {
+  footer { --footer-logo-max: 120px; }
+}
 
 /* === Footer socials: always side-by-side === */
 .footer-social, .footer-social ul {

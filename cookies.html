@@ -129,5 +129,20 @@
 </div>
 <footer role="contentinfo" data-include="partials/footer.html"></footer><script src="assets/js/theme-toggle.js" defer></script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function widont(selector) {
+    document.querySelectorAll(selector).forEach(function(el){
+      var t = el.innerHTML;
+      // Skip if contains child tags that make replacement risky
+      if (/<\w+[^>]*>/.test(t)) return;
+      // Replace last normal space with &nbsp; to keep the final two words together
+      el.innerHTML = t.replace(/\s+(\S+)\s*$/, '&nbsp;$1');
+    });
+  }
+  widont('h1');
+  widont('h2');
+});
+</script>
 </body>
 </html>

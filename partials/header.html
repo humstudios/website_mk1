@@ -71,4 +71,20 @@
 </header>
 
 <!-- Include merged menu script; keep only this (remove main.js/mobile-nav.js) -->
+<script>
+;(function () {
+  try {
+    var stored = localStorage.getItem("theme") || localStorage.getItem("display-mode");
+    if (!stored) return; // fallback to system
+    var el = document.documentElement;
+    if (stored !== "light" && stored !== "dark") {
+      var mql = window.matchMedia("(prefers-color-scheme: dark)");
+      stored = (stored === "dark+dim" || (stored === "auto" && mql.matches)) ? "dark" : "light";
+    }
+    el.setAttribute("data-theme", stored);
+    el.style.colorScheme = stored;
+  } catch (e) {}
+})();
+</script>
+
 <script src="assets/js/hum-menu.js" defer></script>

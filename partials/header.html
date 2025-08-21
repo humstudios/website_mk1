@@ -1,15 +1,8 @@
 <header>
   <div class="top-header">
-    <!-- ✅ Moved .logo to <a> for correct styling -->
     <a class="logo" href="index.html">
-      <img
-        src="assets/img/logos/weblogo03.png"
-        alt="Hum Studios Logo"
-        decoding="async"
-        loading="eager"
-        width="614"
-        height="344"
-      >
+      <img src="assets/img/logos/weblogo03.png" alt="Hum Studios Logo"
+           decoding="async" loading="eager" width="614" height="344">
     </a>
 
     <!-- Desktop Navigation -->
@@ -22,69 +15,58 @@
 
     <!-- Mobile Hamburger Button -->
     <button id="hamburgerBtn" class="hamburger" type="button"
-            aria-label="Toggle menu"
-            aria-expanded="false"
-            aria-controls="mobileMenu">
+            aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
       <span class="bar" aria-hidden="true"></span>
       <span class="bar" aria-hidden="true"></span>
       <span class="bar" aria-hidden="true"></span>
     </button>
 
-    <!-- Mobile Navigation Menu -->
-    <nav id="mobileMenu" class="mobile-nav"
-         aria-label="Mobile"
-         aria-hidden="true">
+    <!-- Mobile Navigation Menu (push-down full-width) -->
+    <nav id="mobileMenu" class="mobile-nav pushdown" aria-label="Mobile" aria-hidden="true" hidden>
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
       <a href="privacy.html">Privacy</a>
     </nav>
+  <style>
+    /* Theme toggle: scoped rotation + fade (header only) */
+    header .theme-toggle__thumb svg {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px; height: 16px;
+      fill: none; stroke: currentColor; stroke-width: 2;
+      stroke-linecap: round; stroke-linejoin: round;
+      transition: opacity .35s ease, transform .45s ease;
+      transform-origin: center center;
+    }
+    /* Light: sun visible (no rotation), moon pre-rotated CCW */
+    header .theme-toggle__thumb .icon-sun  { opacity: 1; transform: translate(-50%, -50%) rotate(0deg)   scale(1);   }
+    header .theme-toggle__thumb .icon-moon { opacity: 0; transform: translate(-50%, -50%) rotate(-90deg) scale(0.9); }
+    /* Dark: moon visible (no rotation), sun pre-rotated CW */
+    html[data-theme="dark"] header .theme-toggle__thumb .icon-sun  { opacity: 0; transform: translate(-50%, -50%) rotate(90deg)  scale(0.9); }
+    html[data-theme="dark"] header .theme-toggle__thumb .icon-moon { opacity: 1; transform: translate(-50%, -50%) rotate(0deg)   scale(1); }
+    /* Reduced motion: disable rotation */
+    @media (prefers-reduced-motion: reduce) {
+      header .theme-toggle__thumb svg { transition: opacity .2s ease !important; transform: translate(-50%, -50%) !important; }
+    }
+  </style>
 
-    <!-- Theme slider toggle -->
+
+
+        <!-- Theme slider toggle (icons inline; CSS controls visibility) -->
     <button id="theme-toggle" class="theme-toggle" type="button"
-            aria-label="Toggle dark mode"
-            aria-pressed="false" title="Light mode">
+            aria-label="Toggle dark mode" aria-pressed="false" title="Light mode">
       <span class="theme-toggle__slider">
         <span class="theme-toggle__thumb">
-          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="5.5" />
-            <line x1="12" y1="7.1" x2="12" y2="2" />
-            <line x1="12" y1="16.9" x2="12" y2="22" />
-            <line x1="7.1" y1="12" x2="2"  y2="12" />
-            <line x1="16.9" y1="12" x2="22" y2="12" />
-            <line x1="8.314" y1="8.314" x2="4.2"  y2="4.2" />
-            <line x1="15.686" y1="15.686" x2="19.8" y2="19.8" />
-            <line x1="8.314" y1="15.686" x2="4.2"  y2="19.8" />
-            <line x1="15.686" y1="8.314" x2="19.8" y2="4.2" />
-          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5.0"></circle><line x1="12" y1="7.0" x2="12" y2="4"></line><line x1="12" y1="17.0" x2="12" y2="20"></line><line x1="7.0" y1="12" x2="4" y2="12"></line><line x1="17.0" y1="12" x2="20" y2="12"></line><line x1="8.46" y1="8.46" x2="6.5" y2="6.5"></line><line x1="15.54" y1="8.46" x2="17.5" y2="6.5"></line><line x1="8.46" y1="15.54" x2="6.5" y2="17.5"></line><line x1="15.54" y1="15.54" x2="17.5" y2="17.5"></line></svg>
           <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
           </svg>
         </span>
       </span>
     </button>
   </div>
 
-  <h1 class="hero-headline" aria-hidden="true">
-    Little&nbsp;Stories,<wbr> Big&nbsp;Adventures!
-  </h1>
+  <h1 class="hero-headline" aria-hidden="true">Little&nbsp;Stories,<wbr> Big&nbsp;Adventures!</h1>
 </header>
-
-<!-- Include merged menu script; keep only this (remove main.js/mobile-nav.js) -->
-<script>
-;(function () {
-  try {
-    var stored = localStorage.getItem("theme") || localStorage.getItem("display-mode");
-    if (!stored) return; // fallback to system
-    var el = document.documentElement;
-    if (stored !== "light" && stored !== "dark") {
-      var mql = window.matchMedia("(prefers-color-scheme: dark)");
-      stored = (stored === "dark+dim" || (stored === "auto" && mql.matches)) ? "dark" : "light";
-    }
-    el.setAttribute("data-theme", stored);
-    el.style.colorScheme = stored;
-  } catch (e) {}
-})();
-</script>
-
-<script src="assets/js/hum-menu.js" defer></script>

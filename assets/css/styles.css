@@ -356,6 +356,69 @@ section { margin-bottom: 0; }
 .animation-placeholder { width: 100%; height: 200px; background-color: #FFFCF5; display: block; margin: var(--space-4) 0; text-align: center; font-style: italic; line-height: 200px; color: #555; }
 
 
+/* =============================================
+   FLOAT-WRAPPED FIGURE INSIDE CARD
+   - Text wraps around the image using float + shape-outside.
+   - Responsive safeguards reduce image width on medium screens,
+     and stack on small screens to keep copy readable.
+============================================= */
+.card--has-float::after { content: ""; display: block; clear: both; }
+
+.card-float {
+  float: right;
+  display: block;
+  width: min(40%, 280px);  /* constrain so figures never fill the card */
+  height: auto;
+  margin: 0 0 var(--space-4) var(--space-6); /* gap from text on the left */
+  border-radius: 16px;
+  background-color: var(--light-card-bg);
+  border: 1px solid var(--light-card-border);
+  object-fit: contain;
+  /* Wrap shape respects the rounded corners */
+  shape-outside: inset(0 round 16px);
+  shape-margin: 1rem;
+}
+.card-float--right { float: right; }
+.card-float--left  { float: left;  margin: 0 var(--space-6) var(--space-4) 0; }
+
+/* Medium screens: reduce width so text retains a comfortable column */
+@media (max-width: 1024px) {
+  .card-float { width: min(32%, 260px); }
+}
+
+/* Narrow-desktop / large tablet */
+@media (max-width: 880px) {
+  .card-float { width: min(28%, 240px); }
+}
+
+/* Small screens: stack below text for readability */
+@media (max-width: 768px) {
+  .card-float,
+  .card-float--right,
+  .card-float--left {
+    float: none;
+    display: block;
+    margin: var(--space-4) auto;
+    width: min(100%, 420px);
+    shape-outside: none;
+    shape-margin: 0;
+  }
+}
+
+/* ============================
+   CARD CARTOON IMAGE (under headline)
+   - Placed under card headlines, above body text
+   - Transparent PNG shows the card background
+============================ */
+.card-cartoon {
+  display: block;
+  margin: var(--space-4) auto var(--space-2) auto;
+  width: clamp(180px, 30%, 320px);  /* not too big */
+  height: auto;
+  object-fit: contain;
+}
+
+
 /* ============================
    FOOTER — Redesigned (2025-08-22)
    - Modern, centered, single-column stack
@@ -520,3 +583,5 @@ html[data-theme=\"dark\"] .top-nav a.is-active { text-decoration: underline; tex
 
 /* SVG defaults */
 .theme-switch__btn svg { fill: currentColor; stroke: currentColor; }
+
+

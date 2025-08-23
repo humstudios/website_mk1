@@ -94,10 +94,6 @@
 @media (max-width: 400px) /* @bp: sm */ {
   :root { --hero-gap-top: var(--space-6); }
 }
-@media (max-width: 400px) /* @bp: sm */ {
-  :root { --hero-gap-top: var(--space-8); }
-}
-
 /* ============================
    BASE / RESET
 ============================ */
@@ -134,9 +130,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   padding: var(--space-8) var(--space-4) var(--space-12);
   width: min(1100px, 92%); margin-inline: auto;
 }
-@media (min-width: 1280px) /* @bp: xl */ {
-  .container { width: min(1100px, 92%); margin-inline: auto; }
-}
+
 
 .top-header {
   position: relative; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap;
@@ -191,7 +185,7 @@ html[data-theme="dark"] header .theme-toggle__thumb .icon-moon { opacity: 1; tra
 ============================ */
 .clouds { position: fixed; inset: 0; width: 100vw; pointer-events: none; overflow: hidden; opacity: .5; z-index: var(--z-clouds); }
 @keyframes cloud-drift { from { transform: translateX(var(--from)); } to { transform: translateX(var(--to)); } }
-.cloud { position: absolute; will-change: transform, opacity; opacity: initial; animation: cloud-drift var(--duration) linear infinite; animation-delay: var(--delay); --from: -20vw; --to: 120vw; --delay: 0s; --duration: 150s; }
+.cloud { position: absolute; will-change: transform, opacity; animation: cloud-drift var(--duration) linear infinite; animation-delay: var(--delay); --from: -20vw; --to: 120vw; --delay: 0s; --duration: 150s; }
 @media (prefers-reduced-motion: reduce) { .cloud { animation: none !important; } }
 /* Per-cloud overrides */
 .cloud1 { top: 2.3%; left: -15vw; width: 200px; --to: 110vw; --delay: -30s; --duration: 180s; }
@@ -329,7 +323,7 @@ h1 { font-size: var(--font-size-h1); }
 h2 { font-size: var(--font-size-h2); margin-top: var(--space-6); margin-bottom: var(--space-2); }
 h3 { font-size: var(--font-size-h3); }
 section { margin-bottom: 0; }
-.hero-headline { display: block; max-width: calc(var(--content-max) - 1rem); width: 100%; margin: 0 auto var(--hero-gap-bottom); text-align: center; line-height: 1.1; font-size: clamp(2.2rem, 5vw, 4rem); text-wrap: balance; hyphens: auto; font-family: var(--font-display); font-weight: 700; color: #FFFCF5; text-shadow: 3px 3px 5px var(--text-glow); }
+.hero-headline { display: block; max-width: calc(var(--content-max) - 1rem); width: 100%; margin: 0 auto var(--hero-gap-bottom); text-align: center; line-height: 1.1; font-size: clamp(2.2rem, 5vw, 4rem); text-wrap: balance;font-family: var(--font-display); font-weight: 700; color: #FFFCF5; text-shadow: 3px 3px 5px var(--text-glow); }
 @supports (font-size: 1cqw) {
   .container { container-type: inline-size; }
   .hero-headline { font-size: clamp(2.2rem, 6.5cqw, 3.7rem); }
@@ -504,9 +498,6 @@ body.contact-page .registered-address { display: block; }
 }
 
 /* Theme compliance */
-html[data-theme="dark"] footer { background-color: var(--gradient-mid) !important; }
-
-
 /* ============================
    UTILITIES
 ============================ */
@@ -519,7 +510,7 @@ html[data-theme="dark"] footer { background-color: var(--gradient-mid) !importan
 .skip-link:focus { position: absolute; left: 1rem; top: 1rem; width: auto; height: auto; overflow: visible; background: #000; color: #fff; padding: .5rem .75rem; border-radius: .5rem; z-index: 10000; }
 section + section { margin-top: var(--stack-gap); }
 .card + .card { margin-top: var(--stack-gap); }
-.card a { overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; }
+.card a { overflow-wrap: break-word; word-break: normal; word-wrap: break-word; }
 
 /* ============================
    THEME TOGGLE (button visuals only)
@@ -538,7 +529,7 @@ html[data-theme="dark"] .theme-toggle__thumb .icon-sun { opacity: 0; }
 html[data-theme="dark"] .theme-toggle__thumb .icon-moon { opacity: 1; }
 .theme-toggle:focus-visible .theme-toggle__slider { outline: 3px solid var(--accent); outline-offset: 2px; }
 .top-header .theme-toggle { position: absolute; top: 0; right: 0; z-index: 50; }
-@media (max-width: 400px) /* @bp: sm */ { .top-header .theme-toggle { right: 0; } }
+
 html[data-theme="light"] .theme-toggle { color: #fff; }
 html[data-theme="light"] .theme-toggle__slider { border-color: #fff; }
 html[data-theme="light"] .theme-toggle__thumb { border-color: #fff; }
@@ -570,7 +561,7 @@ html[data-theme="light"] { --gradient-start: #235b98; --gradient-mid: #4891c3; -
 html[data-theme="dark"] .card--light,
 html[data-theme="dark"].cards-light .card { background: var(--light-card-bg) !important; border-color: var(--light-card-border) !important; color: var(--light-card-fg) !important; color-scheme: light; }
 html[data-theme="dark"] .card--light .muted,
-html[data-theme="dark"].cards-light .card .muted { color: var(--muted); }
+html[data-theme="dark"].cards-light .card .muted { color: var(--text-muted); }
 
 /* ============================
    ACCESSIBILITY / MISC
@@ -584,4 +575,52 @@ html[data-theme=\"dark\"] .top-nav a.is-active { text-decoration: underline; tex
 /* SVG defaults */
 .theme-switch__btn svg { fill: currentColor; stroke: currentColor; }
 
+
+
+
+/* === Mobile headline sizing (no hyphenation) — 2025-08-23 09:41 UTC === */
+@media (max-width: 400px) {
+  h1 { font-size: clamp(1.25rem, 5.5vw + .2rem, 2rem); }
+  h2 { font-size: clamp(1.125rem, 5vw + .2rem, 1.75rem); }
+  h3 { font-size: clamp(1rem, 4.5vw + .2rem, 1.5rem); }
+  .hero-headline { font-size: clamp(1.6rem, 7.2vw, 2.6rem); }
+}
+
+
+
+/* === Column-aware headline sizing (no hyphenation) — 2025-08-23 10:01 UTC === */
+@container (max-width: 560px) {
+  .card :where(h1,h2,h3), .content :where(h1,h2,h3) {
+    line-height: 1.2;
+    max-inline-size: 100%;
+  }
+  .card h1, .content h1 { font-size: clamp(1.2rem, 5.2cqi + .2rem, 1.9rem); }
+  .card h2, .content h2 { font-size: clamp(1.1rem, 4.8cqi + .2rem, 1.7rem); }
+  .card h3, .content h3 { font-size: clamp(1.0rem, 4.2cqi + .2rem, 1.45rem); }
+}
+@container (max-width: 420px) {
+  .card h1, .content h1 { font-size: clamp(1.05rem, 5.5cqi + .15rem, 1.65rem); }
+  .card h2, .content h2 { font-size: clamp(0.98rem, 5.0cqi + .15rem, 1.45rem); }
+}
+
+
+
+/* === Fallback sizing by viewport (older browsers, no CQ) === */
+@media (max-width: 480px) {
+  h1 { font-size: clamp(1.1rem, 5.5vw + .1rem, 1.8rem); }
+  h2 { font-size: clamp(1.0rem, 5.0vw + .1rem, 1.55rem); }
+  h3 { font-size: clamp(0.95rem, 4.5vw + .1rem, 1.35rem); }
+}
+@media (max-width: 360px) {
+  h1 { font-size: clamp(1.0rem, 5.8vw, 1.55rem); }
+  h2 { font-size: clamp(0.95rem, 5.2vw, 1.35rem); }
+}
+
+
+
+/* === Limit headline measure for nicer breaks (no hyphenation) === */
+:where(h1,h2).constrain, .card :where(h1,h2) {
+  max-inline-size: 28ch;
+  margin-inline: auto;
+}
 

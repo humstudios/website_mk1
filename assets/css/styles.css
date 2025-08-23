@@ -199,18 +199,11 @@ html[data-theme="dark"] header .theme-toggle__thumb .icon-moon { opacity: 1; tra
 /* ============================
    NAVIGATION
 ============================ */
-.top-nav { display: flex; gap: var(--space-6); font-family: var(--font-sans); font-weight: 700; font-size: var(--font-size-nav); }
+.top-nav { display: flex; gap: var(--space-6); font-family: var(--font-sans); font-weight: 500; font-size: var(--font-size-nav); }
 .top-nav.desktop { display: none; }
 .top-nav a { text-decoration: none; color: var(--nav-link); text-shadow: 0 1px 1px rgba(0,0,0,.1); transition: transform .3s ease; }
 .top-nav a:hover { transform: scale(1.2); text-decoration: underline; }
 
-/* Active nav link (semantic + class) */
-.top-nav a.is-active,
-.top-nav a[aria-current="page"] {
-  text-decoration: underline;
-  text-underline-offset: .2em;
-  text-decoration-thickness: 2px;
-}
 html[data-theme="light"] .top-nav a:focus-visible { text-decoration: underline; text-underline-offset: .2em; text-decoration-thickness: 2px; }
 
 /* Mobile nav trigger */
@@ -221,7 +214,7 @@ html[data-theme="light"] .top-nav a:focus-visible { text-decoration: underline; 
 
 /* Mobile nav panel */
 .mobile-nav { display: none; position: absolute; right: .2rem; top: 100%; z-index: var(--z-overlay); background: #FFFCF5; padding: var(--space-4); border-radius: 2px; text-align: right; gap: .8rem; flex-direction: column; }
-.mobile-nav a { color: #235b98; font-family: var(--font-sans); font-weight: 700; font-size: var(--font-size-nav); text-decoration: none; display: block; }
+.mobile-nav a { color: #235b98; font-family: var(--font-sans); font-weight: 500; font-size: var(--font-size-nav); text-decoration: none; display: block; }
 .mobile-nav a:hover { text-decoration: underline; }
 .mobile-nav.show, .mobile-nav[open] { display: flex !important; }
 
@@ -449,13 +442,12 @@ footer {
   align-items: center;
   justify-content: center;
   gap: clamp(var(--space-4), 4.5vw, var(--space-8));
-  font-weight: 700;
+  font-weight: 500;
   font-size: clamp(.9rem, .85rem + .3vw, 1rem);
 }
 .footer-links a {
   color: #FFFCF5;
   text-decoration: none;
-  text-underline-offset: .18em;
   transition: transform .2s ease, text-decoration-color .2s ease;
 }
 .footer-links a:hover { text-decoration: underline; transform: translateY(-1px); }
@@ -475,7 +467,7 @@ footer {
 }
 /* small, but fluid across sizes */
 .footer-social img {
-  width: clamp(22px, 4.2vw, 28px);
+  width: clamp(28px, 4.2vw, 42px);
   height: auto;
   display: block;
   filter: drop-shadow(0 1px 1px rgba(0,0,0,.12));

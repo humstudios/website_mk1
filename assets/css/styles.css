@@ -36,7 +36,7 @@
   --shadow-2: 0 0.75em 1.8em rgba(11,18,32,0.14), 0 1.4em 3em rgba(11,18,32,0.10);
   --underline-offset: 0.18em;
   --underline-thickness: 0.08em;
-  --hero-vignette-strength: 0.18;           /* 0–1: vignette opacity at edges */
+
   --clouds-opacity: 0.4;                    /* slightly reduced so content stands out */
 
   /* Color Palette */
@@ -154,7 +154,17 @@
   --z-overlay: 1000;
 
   color-scheme: light;
+
+  /* Cartoon height tokens (scalable) */
+--cartoon-scale: 0.90; /* 1 = current size; lower = smaller */
+--cartoon-h-sm-min: 9em;
+--cartoon-h-sm-ideal: 12em;
+--cartoon-h-sm-max: 16em;
+--cartoon-h-lg-min: 11.25em;
+--cartoon-h-lg-ideal: 16em;
+--cartoon-h-lg-max: 20em;
 }
+
 
 /* ============================
    PROGRESSIVE ENHANCEMENT
@@ -463,7 +473,7 @@ body:not(.loading) .container {
   cursor: pointer; 
   position: relative; 
   z-index: var(--z-nav-mobile); 
-  background-color: rgba(0,0,0,0.2); 
+  background-color: rgba(0,0,0,0.1); 
   border: 0.0625em solid rgba(0,0,0,0.2); 
   border-radius: var(--radius-small); 
   min-width: auto;
@@ -905,23 +915,19 @@ h3 {
   .card-float--left { 
     width: min(40%, 18em); 
   }
+
+/* Cartoon sizing using height clamp + token */
+
+
+
+
+
 }
 
 /* Card cartoon image */
-.card-cartoon {
-  display: block;
-  margin: var(--space-4) auto var(--space-2) auto;
-  width: clamp(9em, 25%, 16em);
-  height: auto;
-  object-fit: contain;
-  border-radius: var(--radius-xs);
-}
 
-@media (min-width: 40em) {
-  .card-cartoon {
-    width: clamp(11.25em, 30%, 20em);
-  }
-}
+
+
 
 /* ============================
    FOOTER - Enhanced Mobile First
@@ -1116,7 +1122,7 @@ body.contact-page .registered-address {
   width: auto;
   height: auto;
   overflow: visible;
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   background: var(--text-strong);
   color: #FFFCF5;
   border-radius: var(--radius-small);
@@ -1124,7 +1130,7 @@ body.contact-page .registered-address {
   top: max(env(safe-area-inset-top), 1em);
   left: max(env(safe-area-inset-left), 1em);
   font-weight: 400;
-  text-decoration: none;
+  text-decoration: underline;
   box-shadow: 0 0.25em 0.5em rgba(0,0,0,0.2);
 }
 
@@ -1178,9 +1184,15 @@ section + section {
   transition: all var(--transition-normal) var(--transition-ease);
 }
 
+.theme-toggle:focus {
+  outline: none; /* suppress generic focus */
+}
+
 .theme-toggle:hover,
 .theme-toggle:focus-visible {
   background-color: rgba(255, 255, 255, 0.1);
+  outline-offset: 12px; 
+  border-radius: 16px;
 }
 
 .theme-toggle__slider { 
@@ -1267,7 +1279,7 @@ html[data-theme="dark"] {
   
   --accent-warm: #ffd166;                   /* brighter in dark for AA contrast */
   --accent-warm-ink: #261a00;
-  --hero-vignette-strength: 0.22;
+
 --gradient-start: #191550; 
   --gradient-mid: #2e2761; 
   --gradient-end: #2B245A; 
@@ -1482,24 +1494,10 @@ footer::before {
     transform: none !important;
   }
 }
-
-/* Subtle hero vignette so media feels embedded */
 .hero-image {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-}
-.hero-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  background: radial-gradient(120% 120% at 50% 40%,
-    rgba(0,0,0,0) 55%,
-    rgba(0,0,0,var(--hero-vignette-strength)) 100%);
-  mix-blend-mode: multiply;
-  opacity: 0.85;
 }
 
 /* Optional hero subheadline */
@@ -1537,10 +1535,8 @@ footer {
 }
 
 @media (prefers-contrast: high) {
-  .hero-image::after { display: none !important; }
 }
 @media (forced-colors: active) {
-  .hero-image::after { display: none !important; }
 }
 
 /* Radii consistency */
@@ -1550,3 +1546,61 @@ footer {
 .footer-links a,
 .footer-social a,
 .theme-toggle { border-radius: var(--radius-xs); }
+
+/* =====================================================================
+   HUM FIX: Theme toggle focus flash (a11y-safe, scoped)
+   - Suppress mouse-click outline but preserve keyboard focus via :focus-visible
+   - Replace small global outline with a larger, rounded ring for the toggle
+   - Appended late to win specificity/cascade without touching other components
+====================================================================== */
+.theme-toggle:focus,
+.theme-toggle:focus:not(:focus-visible) {
+  outline: none !important; /* prevent mouse-click flash */
+}
+
+.theme-toggle:focus-visible {
+  outline: 3px solid var(--focus-ring); /* visible for keyboard users */
+  outline-offset: 12px;                 /* wider frame to match control size */
+  border-radius: 16px;                  /* rounded corners */
+}
+
+
+/* =====================================================================
+   HUM FIX (touch): remove iOS/Android tap highlight flash on theme toggle
+   - Scoped to theme toggle elements only
+   - Does not affect keyboard focus ring (:focus-visible rule remains)
+====================================================================== */
+.theme-toggle,
+.theme-toggle * {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* Avoid any transient outline during tap state on touch */
+@media (hover: none) and (pointer: coarse) {
+  .theme-toggle:active {
+    outline: none;
+  }
+}
+
+/* Cartoon sizing using height clamp + token (safe, responsive) */
+img.card-cartoon, svg.card-cartoon {
+  height: auto; /* don't force height */
+  max-height: clamp(calc(var(--cartoon-h-sm-min) * var(--cartoon-scale)),
+                    calc(var(--cartoon-h-sm-ideal) * var(--cartoon-scale)),
+                    calc(var(--cartoon-h-sm-max) * var(--cartoon-scale)));
+  width: auto;        /* preserve aspect ratio */
+  max-width: 100%;    /* never exceed container */
+  display: block;
+  margin-inline: auto;
+  margin-top: var(--space-m, 1rem);
+  margin-bottom: var(--space-m, 1rem);
+  object-fit: contain;
+}
+
+@media (min-width: 40em) {
+  img.card-cartoon, svg.card-cartoon {
+    max-height: clamp(calc(var(--cartoon-h-lg-min) * var(--cartoon-scale)),
+                      calc(var(--cartoon-h-lg-ideal) * var(--cartoon-scale)),
+                      calc(var(--cartoon-h-lg-max) * var(--cartoon-scale)));
+  }
+}

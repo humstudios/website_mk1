@@ -1,6 +1,15 @@
 (function(){
   'use strict';
 
+// --- animation hold to prevent first-paint flash ---
+try {
+  var __root = document.documentElement;
+  if (!__root.hasAttribute('data-anim')) {
+    __root.setAttribute('data-anim', 'hold');
+  }
+} catch (e) {}
+
+
   // -------- path helpers --------
   function normalizePath(href){
     try {
@@ -56,9 +65,17 @@
       warn(el, 'Includes disabled in file:// preview. Run a local server (e.g., “npx http-server”).');
       return;
     }
-    var url = new URL(src, ROOT_BASE);
+    // Resolve relative to the page by default
+var url = new URL(src, document.baseURI || location.href);
+// If cross-origin or dev-host (127.0.0.1/localhost), force same-origin + current path directory
+if (url.origin !== location.origin || /^(127\.0\.0\.1|localhost)$/i.test(url.hostname)) {
+  var base = location.origin + location.pathname.replace(/[^/]*$/, '');
+  url = new URL(src, base);
+}
+
     try {
-      var res = await fetch(url.toString(), { credentials: 'same-origin', cache: 'force-cache' });
+      // Use the default cache policy for reliability
+      var res = await fetch(url.toString(), { credentials: 'same-origin', cache: 'default' });
       if (!res.ok) throw new Error('HTTP ' + res.status + ' for ' + url);
       var html = await res.text();
       inject(el, html);
@@ -132,24 +149,81 @@
       if (best.classList) best.classList.add('is-active');
     }
   }
+  // -------- GitHub Pages project-site home link fix --------
+  function fixLogoHomeLinkForGithubPages(){
+    try {
+      if (!/github\.io$/i.test(location.hostname)) return;
+      var segs = location.pathname.split('/').filter(Boolean);
+      if (!segs.length) return;
+      var repo = segs[0];
+      document.querySelectorAll('a.logo[href="/"]').forEach(function(a){
+        a.setAttribute('href', '/' + repo + '/');
+      });
+    } catch (e) {}
+  }
+  // -------- GitHub Pages project-site absolute /assets/ rewriter --------
+  function rewriteAbsoluteAssetPathsForGithubPages(){
+    try {
+      if (!/github\.io$/i.test(location.hostname)) return;
+      var segs = location.pathname.split('/').filter(Boolean);
+      if (!segs.length) return; // user/org root site
+      var repo = segs[0];
+      var prefix = '/' + repo + '/assets/';
+      var list = document.querySelectorAll('[src^="/assets/"], [href^="/assets/"], [poster^="/assets/"], link[rel="preload"][href^="/assets/"]');
+      list.forEach(function(el){
+        ['src','href','poster'].forEach(function(attr){
+          if (el.hasAttribute && el.hasAttribute(attr)) {
+            var v = el.getAttribute(attr);
+            if (v && v.indexOf('/assets/') === 0) {
+              el.setAttribute(attr, v.replace('/assets/', prefix));
+            }
+          }
+        });
+        // Handle srcset (images)
+        if (el.hasAttribute && el.hasAttribute('srcset')){
+          var ss = el.getAttribute('srcset').split(',').map(function(part){
+            var t = part.trim();
+            var url = t.split(/\s+/)[0];
+            var rest = t.slice(url.length);
+            if (url.indexOf('/assets/') === 0) url = url.replace('/assets/', prefix);
+            return url + rest;
+          }).join(', ');
+          el.setAttribute('srcset', ss);
+        }
+      });
+    } catch (e) {}
+  }
+
+function __startAnimationsSoon(){
+  try {
+    requestAnimationFrame(function(){
+      document.documentElement.setAttribute('data-anim', 'run');
+    });
+  } catch (e) {}
+}
 
   function run(){
     ensureCloudsPlaceholder();
     var nodes = Array.from(document.querySelectorAll('[data-include]'));
+    
+    // If no includes are found, run final setup and exit.
     if (nodes.length === 0){
+      rewriteAbsoluteAssetPathsForGithubPages();
+      fixLogoHomeLinkForGithubPages();
       setActiveNav();
+      __startAnimationsSoon();
       return;
     }
-    var headerNodes = nodes.filter(function(n){ return /header\.html$/i.test(n.getAttribute('data-include')||''); });
-    var footerNodes = nodes.filter(function(n){ return /footer\.html$/i.test(n.getAttribute('data-include')||''); });
-    var others = nodes.filter(function(n){ return headerNodes.indexOf(n)===-1 && footerNodes.indexOf(n)===-1; });
-    var seq = headerNodes.concat(others, footerNodes);
-
-    seq.reduce(function(p, el){ return p.then(function(){ return loadInclude(el); }); }, Promise.resolve())
+    
+    // Process all found includes (e.g., clouds)
+    nodes.reduce(function(p, el){ return p.then(function(){ return loadInclude(el); }); }, Promise.resolve())
        .then(function(){
          document.dispatchEvent(new CustomEvent('partials:loaded'));
-         // header is now in DOM → we can safely set the active state
+         // Final setup after includes are loaded
+         rewriteAbsoluteAssetPathsForGithubPages();
+         fixLogoHomeLinkForGithubPages();
          setActiveNav();
+         __startAnimationsSoon();
        });
   }
 
